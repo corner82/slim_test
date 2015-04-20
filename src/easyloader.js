@@ -12,7 +12,8 @@
  * 
  */
 (function(){
-	var modules = {
+	var modules = { 
+            
 		draggable:{
 			js:'jquery.draggable.js'
 		},
