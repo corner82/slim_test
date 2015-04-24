@@ -17,7 +17,7 @@ $pdo = new PDO('pgsql:dbname=ecoman_01_10;host=88.249.18.205;user=postgres;passw
 \Slim\Route::setDefaultConditions(array(
     'firstName' => '[a-zA-Z]{3,}',
     'page' => '[0-9]{1,}'
-));
+));    
 
 $app->get('/hello/:name/:firstName', function ($name) {
     echo "Hello, $name";
