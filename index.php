@@ -4,7 +4,13 @@ require 'vendor/autoload.php';
 
 
 
-$app = new \Slim\Slim(array(
+/*$app = new \Slim\Slim(array(
+    'mode' => 'development',
+    'debug' => true,
+    'log.enabled' => true,
+    ));*/
+
+$app = new \Slim\SlimExtended(array(
     'mode' => 'development',
     'debug' => true,
     'log.enabled' => true,
@@ -26,6 +32,9 @@ $app->get('/hello/:name/:firstName', function ($name) {
 $app->post('/hello/:name/:firstName', function ($name) {
     echo "Hello, $name";
 });
+
+
+
 
 
 /**
@@ -161,6 +170,12 @@ $app->get("/getReports_rpt/", function () use ($app, $pdo) {
     $resultArray = array();
     $resultArray['total'] = $res2[0]['toplam'];
     $resultArray['rows'] = $flows;
+    
+    /*$app->contentType('application/json');
+    $app->halt(302, '{"error":"Something went wrong"}');
+    $app->stop();*/
+    
+    
     echo json_encode($resultArray);
     
 });
