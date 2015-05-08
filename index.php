@@ -41,7 +41,7 @@ $app->post('/hello/:name/:firstName', function ($name) {
  *  * zeynel dağlı
  * @since 11-09-2014
  */
-$app->get("/getReports_rpt/", function () use ($app, $pdo) {
+$app->get("/getReports_test/", function () use ($app, $pdo) {
     //$pdo->exec('SET NAMES "utf8"');
     //$res = $pdo->query(  "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'ecoman_18_08' AND TABLE_NAME = 't_flow';"  )->fetchAll(PDO::FETCH_ASSOC);
     /*if(isset($_GET['flows']) && $_GET['flows']!="" ) {
@@ -54,6 +54,8 @@ $app->get("/getReports_rpt/", function () use ($app, $pdo) {
         $flowsStr = rtrim($flowsStr, ',');
     } */
     //echo $flowsStr;
+    
+    print_r(getallheaders());
     
     //print_r($app->container['request']);
     $requestObj = $app->container['request'];

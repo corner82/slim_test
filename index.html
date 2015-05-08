@@ -26,10 +26,11 @@ and open the template in the editor.
         
         
          $('#tt_grid').datagrid({
-            url :'index.php/getReports_rpt',
-            /*queryParams : { url : 'getReports_rpt',
+             url :'../slim_proxy_V0.2/SlimProxyBoot.php',
+            //url :'index.php/getReports_rpt',
+            queryParams : { url : 'getReports_test',
                             
-                        },*/
+                        },
             method : 'GET',
             sortName : 'r_date',
             collapsible:true,

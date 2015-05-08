@@ -104,9 +104,10 @@ namespace Slim\Middleware;
                 'test' => 'content'
             ));
             
-            $this->app->setPublicHash('3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348');
+            //$this->app->setPublicHash('3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348');
             
-            print_r("------public hash---------".$this->app->getPublicHash()."------public hash---------");
+            //
+            //print_r("------public hash---------".$this->app->getPublicHash()."------public hash---------");
 
             /*$hash = hash_hmac('sha256', $content, $privateHash);
 
