@@ -21,7 +21,7 @@ namespace Slim\Middleware;
   * @author     Josh Lockhart
   * @since      1.6.0
   */
-  class MiddlewareTest extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate, \Countable
+  class MiddlewareTest extends \Slim\Middleware /*implements \ArrayAccess, \IteratorAggregate, \Countable*/
 {
     /**
      * @var array
@@ -164,31 +164,6 @@ namespace Slim\Middleware;
         $this->app->log->debug("test loggg");*/
         $this->next->call();
         //$this->save();
-    }
-
-    public function count($mode = 'COUNT_NORMAL') {
-        
-    }
-
-    public function getIterator() {
-        
-    }
-
-    public function offsetExists($offset) {
-        
-    }
-
-    public function offsetGet($offset) {
-        
-    }
-
-    public function offsetSet($offset,
-            $value) {
-        
-    }
-
-    public function offsetUnset($offset) {
-        
     }
 
 }
