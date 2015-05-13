@@ -56,8 +56,8 @@ class EasyUIParamsControler extends \Slim\Middleware implements \ArrayAccess, \I
      */
     public function call()
     {
-        print_r('EasyUIParamsControler middleware call method------');
-        print_r($this->app->request->params());
+        //print_r('EasyUIParamsControler middleware call method------');
+        //print_r($this->app->request->params());
         $this->next->call();
     }
 

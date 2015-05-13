@@ -77,7 +77,7 @@ class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
      */
     public function call()
     {
-        print_r('Flash middleware call method------- ');
+        //print_r('Flash middleware call method------- ');
         //print_r($this->next);
         //Read flash messaging from previous request if available
         $this->loadMessages();

@@ -16,7 +16,7 @@ $app = new \Slim\SlimExtended(array(
     'log.enabled' => true,
     ));
 
-$app->add(new \Slim\Middleware\MiddlewareTest());
+//$app->add(new \Slim\Middleware\MiddlewareTest());
 
 $pdo = new PDO('pgsql:dbname=ecoman_01_10;host=88.249.18.205;user=postgres;password=1q2w3e4r');
 
@@ -55,12 +55,12 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     } */
     //echo $flowsStr;
     
-    print_r(getallheaders());
+    //print_r(getallheaders());
     
     //print_r($app->container['request']);
     $requestObj = $app->container['request'];
-    print_r($requestObj->params());
-    print_r($requestObj->isXhr());
+    //print_r($requestObj->params());
+    //print_r($requestObj->isXhr());
     
     
     if(isset($_GET['page']) && $_GET['page']!="" && isset($_GET['rows']) && $_GET['rows']!="") {

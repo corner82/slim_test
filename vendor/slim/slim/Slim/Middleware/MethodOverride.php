@@ -75,7 +75,7 @@ class MethodOverride extends \Slim\Middleware
      */
     public function call()
     {
-        print_r('methodOverride middleware call method--------  ');
+        //print_r('methodOverride middleware call method--------  ');
         $env = $this->app->environment();
         if (isset($env['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
             // Header commonly used by Backbone.js and others

@@ -48,7 +48,7 @@ namespace Slim\Middleware;
      */
     public function call()
     {
-        print_r('MiddlewareTest middleware call method------');
+        //print_r('MiddlewareTest middleware call method------');
         //print_r($this->next);
         //Read flash messaging from previous request if available
         //$this->loadMessages();
@@ -71,9 +71,9 @@ namespace Slim\Middleware;
             // username passed validation
         } else {
             // username failed validation; print reasons
-            foreach ($validatorChain->getMessages() as $message) {
+           /* foreach ($validatorChain->getMessages() as $message) {
                 echo "$message\n";
-            }
+            }*/
             //$this->app->redirect('/error');
             //$this->app->error();
             //$this->app->halt(500, "info status test!!!!");
@@ -138,12 +138,12 @@ namespace Slim\Middleware;
         $validator = new \Zend\Validator\Barcode('EAN13');
         
         $floatValidator = new \Zend\I18n\Validator\IsFloat();
-        if($floatValidator->isValid(5.3)) print_r ("--float test edildi onaylandÄ±---");
+        if($floatValidator->isValid(5.3)) //print_r ("--float test edildi onaylandÄ±---");
         
         $intValidator = new \Zend\I18n\Validator\IsInt();
         $intValidator->setMessage("test validation");
         
-        if($intValidator->isValid(5)) print_r ("--int test edildi onaylandÄ±---");
+        if($intValidator->isValid(5)) //print_r ("--int test edildi onaylandÄ±---");
         
         $validator = new \Zend\Validator\StringLength();
         $validator->setMax(6);
@@ -151,18 +151,17 @@ namespace Slim\Middleware;
         $validator->isValid("Test"); // returns true
         $validator->isValid("Testing"); // returns false
         
-        print_r($validator->isValid("Test"));
+        /*print_r($validator->isValid("Test"));
         print_r("fffffffffffffffffffff----    ");
-        print_r($validator->isValid("Testing"));
-        if(!$validator->isValid("Testing")) print_r("---is not valid----");
+        print_r($validator->isValid("Testing"));*/
+        if(!$validator->isValid("Testing")) //print_r("---is not valid----");
         
         $logger = new \Zend\Log\Logger;
         $writer = new \Zend\Log\Writer\Stream('php://output');
 
-        $logger->addWriter($writer);
+        /*$logger->addWriter($writer);
         $logger->log(\Zend\Log\Logger::INFO, 'Informational message');
-        print_r($this->app->request->params());
-        $this->app->log->debug("test loggg");
+        $this->app->log->debug("test loggg");*/
         $this->next->call();
         //$this->save();
     }
