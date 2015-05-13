@@ -17,6 +17,7 @@ $app = new \Slim\SlimExtended(array(
     ));
 
 //$app->add(new \Slim\Middleware\MiddlewareTest());
+$app->add(new \Slim\Middleware\MiddlewareHMAC());
 
 $pdo = new PDO('pgsql:dbname=ecoman_01_10;host=88.249.18.205;user=postgres;password=1q2w3e4r');
 
