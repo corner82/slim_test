@@ -39,7 +39,7 @@ $app->post('/hello/:name/:firstName', function ($name) {
 
 
 /**
- *  * zeynel dağlı
+ *  * zeynel daÄŸlÄ±
  * @since 11-09-2014
  */
 $app->get("/getReports_test/", function () use ($app, $pdo) {
@@ -56,7 +56,7 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     } */
     //echo $flowsStr;
     
-    //print_r(getallheaders());
+  
     
     //print_r($app->container['request']);
     $requestObj = $app->container['request'];
