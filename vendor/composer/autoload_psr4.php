@@ -22,4 +22,5 @@ return array(
     'Zend\\Escaper\\' => array($vendorDir . '/zendframework/zend-escaper'),
     'Zend\\Config\\' => array($vendorDir . '/zendframework/zend-config'),
     'Zend\\Cache\\' => array($vendorDir . '/zendframework/zend-cache'),
+    'HMAC\\' => array($vendorDir . '/hmac'),
 );
