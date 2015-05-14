@@ -21,7 +21,9 @@ namespace Slim\Middleware;
   * @author     Josh Lockhart
   * @since      1.6.0
   */
-  class MiddlewareHMAC extends \Slim\Middleware 
+  class MiddlewareHMAC extends \Slim\Middleware implements \Slim\Interfaces\interfaceRequestParams, 
+                                                            \Slim\Interfaces\interfaceRequest,
+                                                            \Slim\Interfaces\interfaceRequestCustomHeaderData
 {
     /**
      * @var array
@@ -38,6 +40,18 @@ namespace Slim\Middleware;
      * @var array
      */
     protected $requestHeaderData;
+    
+    /**
+     * App request parameters
+     * @var array
+     */
+    protected $appRequestParams = array();
+    
+    /**
+     * App request object
+     * @var \Slim\Http\Request
+     */
+    protected $requestObj;
 
     /**
      * Constructor
@@ -46,7 +60,6 @@ namespace Slim\Middleware;
     public function __construct($settings = array())
     {
         
-        
     }
     
     /**
@@ -54,51 +67,26 @@ namespace Slim\Middleware;
      * @return array | null
      * @author Mustafa Zeynel Dağlı
      */
-    protected function getRequestHeaderData()  {
-        if($this->requestHeaderData == null) $this->requestHeaderData = $this->setRequestHeaderData();
-        return $this->requestHeaderData;
+    public function getRequestHeaderData()  {
+        if($this->requestHeaderData == null)   {
+            $this->setRequestHeaderData();
+            return $this->requestHeaderData;
+        } else {
+            return $this->requestHeaderData;
+        }
     }
     
     /**
      * set request custom header info into array
      * @return array
      * @author Mustafa Zeynel Dağlı
+     * @link http://php.net/manual/en/function.getallheaders.php
      */
-    protected function setRequestHeaderData()  {
-        $requestHeaderData = [];
-        if (function_exists("getallheaders")) {
-            $requestHeaderData = getallheaders();
-        } else {
-            $requestHeaderData = $this->getRequestHeadersFastCGI();
-        }
-       
-        return $requestHeaderData;
+    public function setRequestHeaderData($requestHeaderData = array())  {
+        $requestObj = $this->getAppRequest();
+        return $this->requestHeaderData = $requestObj->headers();
     }
     
-    /**
-     * when requesting custom header info on ngix servers,
-     * if not loaded as fastGCI module 'getallheaders' function cannot be used,
-     * also also 'getallheaders' can be used in fastGCI module as PHP 5.4 version and above.
-     * So this is an helper function to het custom header info 
-     * @link http://php.net/manual/en/function.getallheaders.php#84262
-     * @return array
-     * @author Mustafa Zeynel Dağlı
-     */
-    private function getRequestHeadersFastCGI () {
-       $headers = array(); 
-       foreach ($_SERVER as $name => $value) 
-       { 
-           if (substr($name, 0, 5) == 'HTTP_') 
-           { 
-               $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value; 
-           } 
-       } 
-       return $headers; 
-        
-    }
-        
-        
-
     /**
      * Call
      */
@@ -106,6 +94,10 @@ namespace Slim\Middleware;
     {
         print_r('MiddlewareHMAC middleware call method------');
         print_r($this->getRequestHeaderData());
+        print_r($this->requestHeaderData['X-Hash']);
+        $hmac = new \HMAC\HmacTest();
+        //print_r($this->getAppRequestParams());
+        //print_r($this->getAppRequest());
             $publicHash = '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348';
             $privateHash = 'e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e';
             $content    = json_encode(array(
@@ -146,6 +138,38 @@ namespace Slim\Middleware;
         
         $this->next->call();
         //$this->save();
+    }
+
+    public function getAppRequestParams() {
+        if(empty($this->appRequestParams)) $this->appRequestParams = $this->setAppRequestParams();
+        return $this->appRequestParams;
+    }
+
+    public function setAppRequestParams($appRequestParams = array()) {
+        $requestHeaderData = [];
+        $request = $this->app->container['request'];
+        return $request->params();
+        //return $this->app['request']->params();
+    }
+
+    /**
+     * get Application request object
+     * @return \Slim\Http\Request
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getAppRequest() {
+        if($this->requestObj == null) $this->requestObj = $this->setAppRequest();
+        return $this->requestObj;
+    }
+
+    /**
+     * set Application request object
+     * @return \Slim\Http\Request
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setAppRequest(\Slim\Http\Request $request = null) {
+        return $this->app->container['request'];
+        
     }
 
 }

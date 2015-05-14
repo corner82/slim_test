@@ -21,7 +21,7 @@ namespace Slim\Middleware;
   * @author     Josh Lockhart
   * @since      1.6.0
   */
-  class MiddlewareTest extends \Slim\Middleware /*implements \ArrayAccess, \IteratorAggregate, \Countable*/
+  class MiddlewareTest extends \Slim\Middleware implements \Slim\Interfaces\interfaceRequestCustomHeaderData
 {
     /**
      * @var array
@@ -164,6 +164,54 @@ namespace Slim\Middleware;
         $this->app->log->debug("test loggg");*/
         $this->next->call();
         //$this->save();
+    }
+
+    /**
+     * get request custom header info
+     * @return array | null
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getRequestHeaderData()  {
+        if($this->requestHeaderData == null) $this->requestHeaderData = $this->setRequestHeaderData();
+        return $this->requestHeaderData;
+    }
+    
+    /**
+     * set request custom header info into array
+     * @return array
+     * @author Mustafa Zeynel Dağlı
+     * @link http://php.net/manual/en/function.getallheaders.php
+     */
+    public function setRequestHeaderData($requestHeaderData = array())  {
+        $requestHeaderData = [];
+        if (function_exists("getallheaders")) {
+            $requestHeaderData = getallheaders();
+        } else {
+            $requestHeaderData = $this->getRequestHeadersFastCGI();
+        }
+        return $requestHeaderData;
+    }
+    
+    /**
+     * when requesting custom header info on ngix servers,
+     * if not loaded as fastGCI module 'getallheaders' function cannot be used,
+     * also also 'getallheaders' can be used in fastGCI module as PHP 5.4 version and above.
+     * So this is an helper function to het custom header info 
+     * @link http://php.net/manual/en/function.getallheaders.php#84262
+     * @return array
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getRequestHeadersFastCGI () {
+       $headers = array(); 
+       foreach ($_SERVER as $name => $value) 
+       { 
+           if (substr($name, 0, 5) == 'HTTP_') 
+           { 
+               $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value; 
+           } 
+       } 
+       return $headers; 
+        
     }
 
 }
