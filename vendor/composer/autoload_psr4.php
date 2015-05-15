@@ -23,4 +23,5 @@ return array(
     'Zend\\Config\\' => array($vendorDir . '/zendframework/zend-config'),
     'Zend\\Cache\\' => array($vendorDir . '/zendframework/zend-cache'),
     'HMAC\\' => array($vendorDir . '/hmac'),
+    'Utill\\Forwarder\\' => array($vendorDir . '/utill/forwarder'),
 );
