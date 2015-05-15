@@ -92,17 +92,19 @@ namespace Slim\Middleware;
      */
     public function call()
     {
+        $publicHash = '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348';
+        $privateHash = 'e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e';
+        $content    = json_encode(array(
+            'test' => 'content'
+        ));
+        
+        $this->evaluateHash();
+        
         print_r('MiddlewareHMAC middleware call method------');
         print_r($this->getRequestHeaderData());
-        print_r($this->requestHeaderData['X-Hash']);
-        $hmac = new \HMAC\HmacTest();
-        //print_r($this->getAppRequestParams());
-        //print_r($this->getAppRequest());
-            $publicHash = '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348';
-            $privateHash = 'e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e';
-            $content    = json_encode(array(
-                'test' => 'content'
-            ));
+
+        print_r($this->getAppRequestParams());
+        
             
             //$this->app->setPublicHash('3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348');
             
@@ -138,6 +140,22 @@ namespace Slim\Middleware;
         
         $this->next->call();
         //$this->save();
+    }
+    
+    /**
+     * get info to calculate HMAC security measures
+     * @author Mustafa Zeynel Dağlı
+     */
+    private function evaluateHash() {
+        $hmacObj = new \HMAC\Hmac();
+        $hmacObj->setRequestParams($this->getAppRequestParams());
+        $hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
+        $hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
+        $hmacObj->makeHmac();
+        
+        print_r($hmacObj->getHash());
+        
+        if($hmacObj->getHash() == $this->getRequestHeaderData()['X-Hash']) print_r ('-----hash eşit----');
     }
 
     public function getAppRequestParams() {
