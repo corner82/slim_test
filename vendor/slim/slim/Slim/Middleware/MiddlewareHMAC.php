@@ -92,18 +92,15 @@ namespace Slim\Middleware;
      */
     public function call()
     {
-        $publicHash = '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348';
-        $privateHash = 'e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e';
-        $content    = json_encode(array(
-            'test' => 'content'
-        ));
+        print_r('MiddlewareHMAC middleware call method------');
+        
         
         $this->evaluateHash();
         
-        print_r('MiddlewareHMAC middleware call method------');
-        print_r($this->getRequestHeaderData());
+        
+        //print_r($this->getRequestHeaderData());
 
-        print_r($this->getAppRequestParams());
+        //print_r($this->getAppRequestParams());
         
             
             //$this->app->setPublicHash('3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348');
@@ -128,10 +125,7 @@ namespace Slim\Middleware;
             $result = curl_exec($ch);
             curl_close($ch);*/
             
-            //ob_end_flush();
-            /*ob_end_clean();
-            $newURL = 'http://localhost/slim_redirect_test/index.php/redirected_path';
-            header("Location: {$newURL}");*/
+            
          
             
         
@@ -150,12 +144,20 @@ namespace Slim\Middleware;
         $hmacObj = new \HMAC\Hmac();
         $hmacObj->setRequestParams($this->getAppRequestParams());
         $hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
+        // bu private key kısmı veri tabanından alınır hale gelecek
         $hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
         $hmacObj->makeHmac();
         
-        print_r($hmacObj->getHash());
+        //print_r($hmacObj->getHash());
         
-        if($hmacObj->getHash() == $this->getRequestHeaderData()['X-Hash']) print_r ('-----hash eşit----');
+        if($hmacObj->getHash() != $this->getRequestHeaderData()['X-Hash'])  {
+            print_r ('-----hash eşit değil----');
+            $hashNotMatchForwarder = new \Utill\Forwarder\hashNotMatchForwarder();
+            $hashNotMatchForwarder->redirect();
+            
+        } else {
+           print_r ('-----hash eşit ----'); 
+        }
     }
 
     public function getAppRequestParams() {
