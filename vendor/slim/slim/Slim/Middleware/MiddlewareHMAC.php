@@ -92,48 +92,9 @@ namespace Slim\Middleware;
      */
     public function call()
     {
-        print_r('MiddlewareHMAC middleware call method------');
-        
-        
+        //print_r('MiddlewareHMAC middleware call method------');
         $this->evaluateHash();
-        
-        
-        //print_r($this->getRequestHeaderData());
-
-        //print_r($this->getAppRequestParams());
-        
-            
-            //$this->app->setPublicHash('3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348');
-            
-            //
-            //print_r("------public hash---------".$this->app->getPublicHash()."------public hash---------");
-
-            /*$hash = hash_hmac('sha256', $content, $privateHash);
-
-            $headers = array(
-                'X-Public: '.$publicHash,
-                'X-Hash: '.$hash
-            );
-            //ob_flush();
-            
-            
-            $ch = curl_init('http://localhost/slim_redirect_test/index.php/redirected_path');
-            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
-            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch,CURLOPT_POSTFIELDS,$content);
-
-            $result = curl_exec($ch);
-            curl_close($ch);*/
-            
-            
-         
-            
-        
-        
-        
-        
         $this->next->call();
-        //$this->save();
     }
     
     /**
