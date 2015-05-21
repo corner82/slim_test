@@ -105,6 +105,7 @@ namespace Slim\Middleware;
         $hmacObj = new \HMAC\Hmac();
         $hmacObj->setRequestParams($this->getAppRequestParams());
         $hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
+        $hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
         // bu private key kısmı veri tabanından alınır hale gelecek
         $hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
         $hmacObj->makeHmac();
