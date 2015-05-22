@@ -118,21 +118,13 @@ namespace Slim\Middleware;
      * @author Mustafa Zeynel Dağlı
      */
     private function evaluateHash() {
-<<<<<<< HEAD
+
         $this->hmacObj = new \HMAC\Hmac();
         $this->hmacObj->setRequestParams($this->getAppRequestParams());
         $this->hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
         $this->hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
-=======
-        $hmacObj = new \HMAC\Hmac();
-        $hmacObj->setRequestParams($this->getAppRequestParams());
-        $hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
-<<<<<<< HEAD
-        $hmacObj->$this->getRequestHeaderData()['X-TimeStamp']; //// replay attack lar için oki 
-=======
-        $hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
->>>>>>> origin/master
->>>>>>> origin/master
+
+
         // bu private key kısmı veri tabanından alınır hale gelecek
         $this->hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
         $this->hmacObj->makeHmac();
