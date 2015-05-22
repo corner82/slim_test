@@ -82,8 +82,8 @@ class Hmac {
      * @version 0.0.1
      */
       public function differenceTimeStamp() {
-        if(getTimeStamp() != null) {
-            return time() - getTimeStamp();
+        if($this->getTimeStamp() != null) {
+            return time() - $this->getTimeStamp();
          } else {
             return null;
         } 
