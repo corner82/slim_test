@@ -98,13 +98,12 @@ namespace Slim\Middleware;
      */
     public function call()
     {
-        $encrypt = new \Encrypt\EncryptManual('test');
+        /*$encrypt = new \Encrypt\EncryptManual('test');
         //$encryptValue = $encrypt->encrypt_times(1, 'kullanici:sifre');
         //print_r('--'.$encryptValue.'--');
-        
         $decryptValue = $encrypt->decrypt_times(1, 'd6wINnuUjbm8Arnae7MY5WWz6li1k-u_1kt_fMl0wsDOUJQ');
-        print_r('==='.$decryptValue.'===');
-        //print_r('MiddlewareHMAC middleware call method------');
+        //print_r('==='.$decryptValue.'===');*/
+        
         $this->evaluateHash();
         $this->next->call();
     }
@@ -123,8 +122,6 @@ namespace Slim\Middleware;
         $this->hmacObj->setRequestParams($this->getAppRequestParams());
         $this->hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
         $this->hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
-
-
         // bu private key kısmı veri tabanından alınır hale gelecek
         $this->hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
         $this->hmacObj->makeHmac();
@@ -132,12 +129,12 @@ namespace Slim\Middleware;
         //print_r($hmacObj->getHash()); 
         
         if($this->hmacObj->getHash() != $this->getRequestHeaderData()['X-Hash'])  {
-            print_r ('-----hash eşit değil----');
+            //print_r ('-----hash eşit değil----');
             $hashNotMatchForwarder = new \Utill\Forwarder\hashNotMatchForwarder();
             $hashNotMatchForwarder->redirect();
             
         } else {
-           print_r ('-----hash eşit ----'); 
+           //print_r ('-----hash eşit ----'); 
         }
     }
 
