@@ -163,7 +163,8 @@ namespace Slim\Middleware;
     private function getTimeDiff() { 
         $this->getHmacObj();  
         $this->hmacObj->setTimeStamp($this->getRequestHeaderData()['X-TimeStamp']);
-        print_r($this->hmacObj->differenceTimeStamp());
+        print_r('---'.$this->hmacObj->differenceTimeStamp().'---');
+        print_r('zzz'.$this->getRequestHeaderData()['X-TimeStamp'].'zzz' );
     }
 
     public function getAppRequestParams() {

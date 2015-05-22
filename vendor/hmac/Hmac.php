@@ -56,11 +56,12 @@ class Hmac {
      * @version 0.0.1
      */
       public function setTimeStamp($timeStamp = null) {
-        if($timeStamp == null) {
+           if($timeStamp == null) {
             $this->timeStamp = time();
          } else {
             $this->timeStamp = $timeStamp;
-        }   
+        } 
+        return $this->timeStamp;
     }
     
      /**
@@ -82,12 +83,14 @@ class Hmac {
      * @version 0.0.1
      */
       public function differenceTimeStamp() {
-        if($this->getTimeStamp() != null) {
-            return time() - $this->getTimeStamp();
+        if($this->timeStamp != null) {
+            sleep(10);
+            print_r($this->timeStamp);
+            return time() - $this->timeStamp;
          } else {
             return null;
         } 
-         print_r('// differenceTimeStamp()--'.$this->differenceTimeStamp().'//');
+         
     } 
        
     public function makeHmac() {
