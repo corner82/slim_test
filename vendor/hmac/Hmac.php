@@ -1,12 +1,11 @@
 <?php
-
 /**
  * Rest Api Proxy Library
  *
  * @author Zeynel Dağlı
  * @version 0.2
  */
-namespace HMAC;
+namespace Hmac;
 
 class Hmac {
     
@@ -19,10 +18,19 @@ class Hmac {
     protected $requestParams = array();
     
     protected $nonce = null;
-
+    
+    protected $timeStamp = null;
 
     public function __construct() {
         
+    }
+    
+    public function setHash($hash = null) {
+        $this->hash = $hash;
+    }
+    
+    public function getHash() {
+        return $this->hash;
     }
     
     public function setNonce($nonce = null) {
@@ -40,16 +48,53 @@ class Hmac {
         return $this->nonce;
     }
     
-    public function setHash($hash = null) {
-        $this->hash = $hash;
+     /**
+     * set timestamp 
+     * framework
+     * @param string $timeStamp
+     * @author Okan Cıran
+     * @version 0.0.1
+     */
+      public function setTimeStamp($timeStamp = null) {
+        if($timeStamp == null) {
+            $this->timeStamp = time();
+         } else {
+            $this->timeStamp = $timeStamp;
+        }   
     }
     
-    public function getHash() {
-        return $this->hash;
-    }
+     /**
+     * get timestamp 
+     * framework
+     * 
+     * @author Okan Cıran
+     * @version 0.0.1
+     */
+    public function getTimeStamp() {
+        return $this->timeStamp;
+    }   
     
+     /**
+     * difference timestamp 
+     * framework
+     * @param string $timeStamp
+     * @author Okan Cıran
+     * @version 0.0.1
+     */
+      public function differenceTimeStamp() {
+        if(getTimeStamp() != null) {
+            return time() - getTimeStamp();
+         } else {
+            return null;
+        } 
+         print_r('// differenceTimeStamp()--'.$this->differenceTimeStamp().'//');
+    } 
+       
     public function makeHmac() {
-        $this->hash = hash_hmac('sha256', json_encode($this->requestParams), $this->privateKey);
+        //HMAC(HMAC(MESSAGE, user_password), application_key)
+        $this->setNonce();
+        $this->hash = hash_hmac('sha256', hash_hmac('sha256', json_encode($this->requestParams),  $this->getNonce()), $this->privateKey);
+        //$this->hash = hash_hmac('sha256', json_encode($this->requestParams), $this->privateKey);
     }
     
     public function setPublicKey($publicKey = null) {
@@ -76,4 +121,3 @@ class Hmac {
         return $this->requestParams;
     }
 }
-
