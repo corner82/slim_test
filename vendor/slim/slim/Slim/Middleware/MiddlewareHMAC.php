@@ -92,6 +92,12 @@ namespace Slim\Middleware;
      */
     public function call()
     {
+        $encrypt = new \Encrypt\EncryptManual('test');
+        //$encryptValue = $encrypt->encrypt_times(1, 'kullanici:sifre');
+        //print_r('--'.$encryptValue.'--');
+        
+        $decryptValue = $encrypt->decrypt_times(1, 'd6wINnuUjbm8Arnae7MY5WWz6li1k-u_1kt_fMl0wsDOUJQ');
+        print_r('==='.$decryptValue.'===');
         //print_r('MiddlewareHMAC middleware call method------');
         $this->evaluateHash();
         $this->next->call();
@@ -105,7 +111,11 @@ namespace Slim\Middleware;
         $hmacObj = new \HMAC\Hmac();
         $hmacObj->setRequestParams($this->getAppRequestParams());
         $hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
+<<<<<<< HEAD
         $hmacObj->$this->getRequestHeaderData()['X-TimeStamp']; //// replay attack lar için oki 
+=======
+        $hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
+>>>>>>> origin/master
         // bu private key kısmı veri tabanından alınır hale gelecek
         $hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
         $hmacObj->makeHmac();
