@@ -84,7 +84,7 @@ class Hmac {
      */
       public function differenceTimeStamp() {
         if($this->timeStamp != null) {
-            sleep(10);
+         //   sleep(10);
             print_r($this->timeStamp);
             return time() - $this->timeStamp;
          } else {
