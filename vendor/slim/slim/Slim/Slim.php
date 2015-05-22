@@ -223,7 +223,7 @@ class Slim
         //$this->add(new \Slim\Middleware\Flash());
         
         $this->add(new \Slim\Middleware\MethodOverride());
-        $this->add(new \Slim\Middleware\MiddlewareTest());
+        //$this->add(new \Slim\Middleware\MiddlewareTest());
         $this->add(new \Slim\Middleware\Flash());
         
         //$this->add(new \Slim\Middleware\MethodOverride());
