@@ -52,6 +52,12 @@ namespace Slim\Middleware;
      * @var \Slim\Http\Request
      */
     protected $requestObj;
+    
+    /**
+     * hmac object
+     * @var \Hmac\Hmac
+     */
+    protected $hmacObj;
 
     /**
      * Constructor
@@ -103,22 +109,26 @@ namespace Slim\Middleware;
         $this->next->call();
     }
     
+    protected function calcExpireTime() {
+        
+    }
+    
     /**
      * get info to calculate HMAC security measures
      * @author Mustafa Zeynel Dağlı
      */
     private function evaluateHash() {
-        $hmacObj = new \HMAC\Hmac();
-        $hmacObj->setRequestParams($this->getAppRequestParams());
-        $hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
-        $hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
+        $this->hmacObj = new \HMAC\Hmac();
+        $this->hmacObj->setRequestParams($this->getAppRequestParams());
+        $this->hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
+        $this->hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
         // bu private key kısmı veri tabanından alınır hale gelecek
-        $hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
-        $hmacObj->makeHmac();
+        $this->hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
+        $this->hmacObj->makeHmac();
         
         //print_r($hmacObj->getHash());
         
-        if($hmacObj->getHash() != $this->getRequestHeaderData()['X-Hash'])  {
+        if($this->hmacObj->getHash() != $this->getRequestHeaderData()['X-Hash'])  {
             print_r ('-----hash eşit değil----');
             $hashNotMatchForwarder = new \Utill\Forwarder\hashNotMatchForwarder();
             $hashNotMatchForwarder->redirect();
