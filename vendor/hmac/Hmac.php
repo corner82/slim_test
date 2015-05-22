@@ -17,10 +17,27 @@ class Hmac {
     protected $privateKey;
     
     protected $requestParams = array();
+    
+    protected $nonce = null;
 
 
     public function __construct() {
         
+    }
+    
+    public function setNonce($nonce = null) {
+        if($nonce == null) {
+            $this->nonce = md5(time().rand());
+        } else {
+            $this->nonce = $nonce;
+        }        
+        //print_r('!!!!'.$this->nonce.'!!!!');
+    }
+    
+    public function getNonce() {
+        //if($this->nonce==null) $this->setNonce();
+        //print_r('// get nonce()--'.$this->nonce.'//');
+        return $this->nonce;
     }
     
     public function setHash($hash = null) {
