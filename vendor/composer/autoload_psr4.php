@@ -24,4 +24,5 @@ return array(
     'Zend\\Cache\\' => array($vendorDir . '/zendframework/zend-cache'),
     'HMAC\\' => array($vendorDir . '/hmac'),
     'Utill\\Forwarder\\' => array($vendorDir . '/utill/forwarder'),
+    'Encrypt\\' => array($vendorDir . '/encrypt'),
 );
