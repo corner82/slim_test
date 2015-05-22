@@ -103,7 +103,7 @@ namespace Slim\Middleware;
         //print_r('--'.$encryptValue.'--');
         $decryptValue = $encrypt->decrypt_times(1, 'd6wINnuUjbm8Arnae7MY5WWz6li1k-u_1kt_fMl0wsDOUJQ');
         //print_r('==='.$decryptValue.'===');*/
-        
+        $this->getTimeDiff();
         $this->evaluateHash();
         $this->next->call();
     }
@@ -112,13 +112,32 @@ namespace Slim\Middleware;
         
     }
     
+     /**
+     * get hmacObj
+     * @author Okan Cıran
+     */
+      private function getHmacObj() {            
+      if ($this->hmacObj == null) { 
+            $this->setHmacObj();          
+      } else {
+            return $this->hmacObj;
+      }       
+    }  
+    
+    /**
+     * set hmacObj
+     * @author Okan Cıran
+     */
+     private function setHmacObj() {            
+        $this->hmacObj = new \HMAC\Hmac();       
+     } 
+     
     /**
      * get info to calculate HMAC security measures
      * @author Mustafa Zeynel Dağlı
      */
     private function evaluateHash() {
-
-        $this->hmacObj = new \HMAC\Hmac();
+        $this->getHmacObj();
         $this->hmacObj->setRequestParams($this->getAppRequestParams());
         $this->hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
         $this->hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
@@ -136,6 +155,15 @@ namespace Slim\Middleware;
         } else {
            //print_r ('-----hash eşit ----'); 
         }
+    }
+      /**
+     * get time difference
+     * @author Okan Cıran
+     */
+    private function getTimeDiff() { 
+        $this->getHmacObj();  
+        $this->hmacObj->setTimeStamp($this->getRequestHeaderData()['X-TimeStamp']);
+        print_r($this->hmacObj->differenceTimeStamp());
     }
 
     public function getAppRequestParams() {
