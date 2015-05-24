@@ -58,6 +58,12 @@ namespace Slim\Middleware;
      * @var \Hmac\Hmac
      */
     protected $hmacObj;
+    
+    /**
+     * request expire time as seconds
+     * @var int
+     */
+    protected $requestExpireTime = 60;
 
     /**
      * Constructor
@@ -98,12 +104,7 @@ namespace Slim\Middleware;
      */
     public function call()
     {
-        /*$encrypt = new \Encrypt\EncryptManual('test');
-        //$encryptValue = $encrypt->encrypt_times(1, 'kullanici:sifre');
-        //print_r('--'.$encryptValue.'--');
-        $decryptValue = $encrypt->decrypt_times(1, 'd6wINnuUjbm8Arnae7MY5WWz6li1k-u_1kt_fMl0wsDOUJQ');
-        //print_r('==='.$decryptValue.'===');*/
-        $this->getTimeDiff();
+        $this->evaluateExpireTime();
         $this->evaluateHash();
         $this->next->call();
     }
@@ -156,15 +157,28 @@ namespace Slim\Middleware;
            //print_r ('-----hash eşit ----'); 
         }
     }
-      /**
+    
+    /**
      * get time difference
      * @author Okan Cıran
      */
-    private function getTimeDiff() { 
-        $this->getHmacObj();  
-        $this->hmacObj->setTimeStamp($this->getRequestHeaderData()['X-TimeStamp']);
-        print_r('---'.$this->hmacObj->differenceTimeStamp().'---');
-        print_r('zzz'.$this->getRequestHeaderData()['X-TimeStamp'].'zzz' );
+    private function evaluateExpireTime() { 
+        $this->getHmacObj();
+        $encryptClass = $this->app->setEncryptClass();
+        $this->hmacObj->setTimeStamp($encryptClass->decrypt($this->getRequestHeaderData()['X-TimeStamp']));
+        $timeDiff = $this->hmacObj->timeStampDiff();
+        //print_r('---'.$timeDiff.'---');      
+        //print_r('zzz'.$this->getRequestHeaderData()['X-TimeStamp'].'zzz' );
+        //print_r('zzz'.$encryptClass->decrypt($this->getRequestHeaderData()['X-TimeStamp']).'zzz' );
+        
+        if($timeDiff > $this->requestExpireTime)  {
+            //print_r ('-----expire time exceeded----');
+            $hashNotMatchForwarder = new \Utill\Forwarder\timeExpiredForwarder();
+            $hashNotMatchForwarder->redirect();
+            
+        } else {
+           //print_r ('-----expire time not exceeded----'); 
+        }  
     }
 
     public function getAppRequestParams() {

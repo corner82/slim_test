@@ -82,10 +82,9 @@ class Hmac {
      * @author Okan Cıran
      * @version 0.0.1
      */
-      public function differenceTimeStamp() {
+      public function timeStampDiff() {
         if($this->timeStamp != null) {
-         //   sleep(10);
-            print_r($this->timeStamp);
+            //print_r($this->timeStamp);
             return time() - $this->timeStamp;
          } else {
             return null;
