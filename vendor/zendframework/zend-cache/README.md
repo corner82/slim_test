@@ -1,14 +1,12 @@
-Cache Component from ZF2
-========================
+# zend-cache
 
-This is the Cache component for ZF2.
+[![Build Status](https://secure.travis-ci.org/zendframework/zend-cache.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-cache)
+[![Coverage Status](https://coveralls.io/repos/zendframework/zend-cache/badge.svg?branch=master)](https://coveralls.io/r/zendframework/zend-cache?branch=master)
 
-- File issues at https://github.com/zendframework/zf2/issues
-- Create pull requests against https://github.com/zendframework/zf2
-- Documentation is at http://framework.zend.com/docs
+`Zend\Cache` provides a general cache system for PHP. The `Zend\Cache` component
+is able to cache different patterns (class, object, output, etc) using different
+storage adapters (DB, File, Memcache, etc).
 
-LICENSE
--------
 
-The files in this archive are released under the [Zend Framework
-license](http://framework.zend.com/license), which is a 3-clause BSD license.
+- File issues at https://github.com/zendframework/zend-cache/issues
+- Documentation is at http://framework.zend.com/manual/current/en/index.html#zend-cache

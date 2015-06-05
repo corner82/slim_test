@@ -1,15 +1,13 @@
-Config Component from ZF2
-=========================
+# zend-config
 
-This is the Config component for ZF2.
+[![Build Status](https://secure.travis-ci.org/zendframework/zend-config.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-config)
+[![Coverage Status](https://coveralls.io/repos/zendframework/zend-config/badge.svg?branch=master)](https://coveralls.io/r/zendframework/zend-config?branch=master)
 
-- File issues at https://github.com/zendframework/zf2/issues
-- Create pull requests against https://github.com/zendframework/zf2
-- Documentation is at http://framework.zend.com/docs
+`Zend\Config` is designed to simplify access to configuration data within
+applications. It provides a nested object property-based user interface for
+accessing this configuration data within application code. The configuration
+data may come from a variety of media supporting hierarchical data storage.
 
-LICENSE
--------
 
-The files in this archive are released under the [Zend Framework
-license](http://framework.zend.com/license), which is a 3-clause BSD license.
-
+- File issues at https://github.com/zendframework/zend-code/issues
+- Documentation is at http://framework.zend.com/manual/current/en/index.html#zend-code

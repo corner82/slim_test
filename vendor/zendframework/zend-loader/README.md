@@ -1,15 +1,10 @@
-Loader Component from ZF2
-=========================
+# zend-loader
 
-This is the Loader component for ZF2.
+[![Build Status](https://secure.travis-ci.org/zendframework/zend-loader.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-loader)
+[![Coverage Status](https://coveralls.io/repos/zendframework/zend-loader/badge.svg?branch=master)](https://coveralls.io/r/zendframework/zend-loader?branch=master)
 
-- File issues at https://github.com/zendframework/zf2/issues
-- Create pull requests against https://github.com/zendframework/zf2
-- Documentation is at http://framework.zend.com/docs
+`Zend\Loader` provides different strategies for autoloading PHP classes.
 
-LICENSE
--------
 
-The files in this archive are released under the [Zend Framework
-license](http://framework.zend.com/license), which is a 3-clause BSD license.
-
+- File issues at https://github.com/zendframework/zend-loader/issues
+- Documentation is at http://framework.zend.com/manual/current/en/index.html#zend-loader

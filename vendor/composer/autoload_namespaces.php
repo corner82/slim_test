@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Slim' => array($vendorDir . '/slim/slim'),
-    //'HMAC' => array($vendorDir . '/hmac')
+    'PhpAmqpLib' => array($vendorDir . '/videlalvaro/php-amqplib'),
 );

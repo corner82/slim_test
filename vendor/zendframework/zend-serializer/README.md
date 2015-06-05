@@ -1,15 +1,12 @@
-Serializer Component from ZF2
-=============================
+# zend-serializer
 
-This is the Serializer component for ZF2.
+[![Build Status](https://secure.travis-ci.org/zendframework/zend-serializer.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-serializer)
+[![Coverage Status](https://coveralls.io/repos/zendframework/zend-serializer/badge.svg?branch=master)](https://coveralls.io/r/zendframework/zend-serializer?branch=master)
 
-- File issues at https://github.com/zendframework/zf2/issues
-- Create pull requests against https://github.com/zendframework/zf2
-- Documentation is at http://framework.zend.com/docs
+The `Zend\Serializer` component provides an adapter based interface to simply
+generate storable representation of PHP types by different facilities, and
+recover.
 
-LICENSE
--------
 
-The files in this archive are released under the [Zend Framework
-license](http://framework.zend.com/license), which is a 3-clause BSD license.
-
+- File issues at https://github.com/zendframework/zend-serializer/issues
+- Documentation is at http://framework.zend.com/manual/current/en/index.html#zend-serializer
