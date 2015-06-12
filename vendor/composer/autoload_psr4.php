@@ -23,6 +23,7 @@ return array(
     'Zend\\Config\\' => array($vendorDir . '/zendframework/zend-config/src'),
     'Zend\\Cache\\' => array($vendorDir . '/zendframework/zend-cache/src'),
     'HMAC\\' => array($vendorDir . '/hmac'),
-    'HMAC\\' => array($vendorDir . '/hmac'),
     'Encrypt\\' => array($vendorDir . '/encrypt'),
+    'Utill\\Forwarder\\' => array($vendorDir . '/utill/forwarder'),
+    'Utill\\MQ\\' => array($vendorDir . '/utill/mq'),
 );

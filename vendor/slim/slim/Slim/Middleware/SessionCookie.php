@@ -106,7 +106,7 @@ class SessionCookie extends \Slim\Middleware
      */
     public function call()
     {
-        //print_r('sessionCookie middleware call method ');
+        //print_r('--SessionCookie middleware call()--');
         $this->loadSession();
         $this->next->call();
         $this->saveSession();

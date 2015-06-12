@@ -58,7 +58,7 @@ namespace Slim;
  * @author  Josh Lockhart
  * @since   1.0.0
  */
-class Log
+class Log implements \Utill\MQ\ImessagePublisher
 {
     const EMERGENCY = 1;
     const ALERT     = 2;
@@ -98,6 +98,21 @@ class Log
      * @var int
      */
     protected $level;
+    
+    /**
+     * if true exceptions will be sent to queue
+     * @var boolean | null
+     * @author Mustafa Zeynel Dağlı
+     */
+    protected $exceptionsQueue;
+    
+    /**
+     * if exceptions sent to queue, determines how queue receiver will handle
+     * message (How to log messages)
+     * @var string
+     * @author Mustafa Zeynel Dağlı
+     */
+    protected $exceptionsQueueLogging;
 
     /**
      * Constructor
@@ -108,6 +123,42 @@ class Log
         $this->writer = $writer;
         $this->enabled = true;
         $this->level = self::DEBUG;
+    }
+    
+    /**
+     * set if exceptions will be logged in queue
+     * @param string $exceptionsQueueLogging
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setExceptionsQueueLogging($exceptionsQueueLogging) {
+        $this->exceptionsQueueLogging = $exceptionsQueueLogging;
+    }
+    
+    /**
+     * get if exceptions will be logged in queue
+     * @return string | null
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getExceptionsQueueLogging() {
+        return $this->exceptionsQueueLogging;
+    }
+    
+    /**
+     * set if exceptions will be sent to queue
+     * @param boolean $exceptionsQueue
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setExceptionsQueue($exceptionsQueue) {
+        $this->exceptionsQueue = $exceptionsQueue;
+    }
+    
+    /**
+     * get if exceptions will be sent to queue
+     * @return boolean | null
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getExceptionsQueue() {
+        return $this->exceptionsQueue;
     }
 
     /**
@@ -139,10 +190,12 @@ class Log
      */
     public function setLevel($level)
     {
+        //print_r('log setlevel() log level-->'.$level);
         if (!isset(self::$levels[$level])) {
             throw new \InvalidArgumentException('Invalid log level');
         }
         $this->level = $level;
+        //print_r('log setlevel() log level2-->'.$this->level);
     }
 
     /**
@@ -245,6 +298,7 @@ class Log
      */
     public function error($object, $context = array())
     {
+        //print_r('---log error()---');
         return $this->log(self::ERROR, $object, $context);
     }
 
@@ -256,6 +310,7 @@ class Log
      */
     public function critical($object, $context = array())
     {
+        //print_r('---log critical()---');
         return $this->log(self::CRITICAL, $object, $context);
     }
 
@@ -303,28 +358,63 @@ class Log
      */
     public function log($level, $object, $context = array())
     {
+        //print_r('log level-->'.$level);
+        //print_r(json_encode($object));
+        //print_r($object->getFile());
+        /**
+         * set thrown exceptions to rabbitMQ message queue
+         * @author Zeynel Dağlı
+         */
+        if($this->exceptionsQueue) $this->publishMessage ($object);
+        
         if (!isset(self::$levels[$level])) {
             throw new \InvalidArgumentException('Invalid log level supplied to function');
         } else if ($this->enabled && $this->writer && $level <= $this->level) {
             if (is_array($object) || (is_object($object) && !method_exists($object, "__toString"))) {
                 $message = print_r($object, true);
             } else {
-                print_r("log method---");
-                print_r($object);
+                //print_r("----log method---");
+                //print_r(json_encode($object));
                 $message = (string) $object;
             }
 
             if (count($context) > 0) {
+                //print_r("----log method22222---");
                 if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
                     $message .= ' - ' . $context['exception'];
                     unset($context['exception']);
                 }
                 $message = $this->interpolate($message, $context);
             }
+            //print_r(json_encode($message));
+            //print_r("----log method222---");
             return $this->writer->write($message, $level);
         } else {
+            //print_r('--error level seviyesi sistem leveldan kritik--');
             return false;
         }
+    }
+    
+    /**
+     * message wrapper function
+     * @param \Exception $e
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function publishMessage($object = null, array $params = array()) {
+        date_default_timezone_set('Europe/Istanbul');
+        $exceptionMQ = new \Utill\MQ\exceptionMQ();
+        $exceptionMQ->setChannelProperties(array('queue.name' => 'invoice_queue'));
+        $message = new \Utill\MQ\MessageMQ\MQMessage();
+        $message->setMessageBody(array('message' => $object->getMessage(), 
+                                        'file' => $object->getFile(),
+                                        'line' => $object->getLine(),
+                                        'trace' => $object->getTraceAsString(),
+                                        'time'  => date('l jS \of F Y h:i:s A'),
+                                        'logFormat' => $this->getExceptionsQueueLogging()));
+         $message->setMessageProperties(array('delivery_mode' => 2,
+                                              'content_type' => 'application/json'));
+         $exceptionMQ->setMessage($message->setMessage());
+         $exceptionMQ->basicPublish();
     }
 
     /**
@@ -347,6 +437,11 @@ class Log
      */
     protected function interpolate($message, $context = array())
     {
+        /*
+        print_r('--context print--');
+        print_r($context);
+        print_r('--context print2--');
+         */
         $replace = array();
         foreach ($context as $key => $value) {
             $replace['{' . $key . '}'] = $value;

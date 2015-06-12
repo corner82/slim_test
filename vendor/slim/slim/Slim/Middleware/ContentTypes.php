@@ -72,6 +72,7 @@ class ContentTypes extends \Slim\Middleware
      */
     public function call()
     {
+        //print_r('--ContentTypes middleware call()--');
         $mediaType = $this->app->request()->getMediaType();
         if ($mediaType) {
             $env = $this->app->environment();

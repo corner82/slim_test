@@ -195,6 +195,17 @@ class Slim
         $this->container->singleton('log', function ($c) {
             $log = new \Slim\Log($c['logWriter']);
             $log->setEnabled($c['settings']['log.enabled']);
+            /**
+             * set exception and message queue cnofiguration to logger 
+             * @author Mustafa Zeynel Dağlı
+             */
+            $log->setExceptionsQueue($c['settings']['exceptions.rabbitMQ']);
+            /**
+             * set message queue logging format on message receiver
+             * @author Mustafa Zeynel Dağlı
+             */
+            $log->setExceptionsQueueLogging($c['settings']['exceptions.rabbitMQ.logging']);
+            //print_r('slim construct log level-->'.$c['settings']['log.level']);
             $log->setLevel($c['settings']['log.level']);
             $env = $c['environment'];
             $env['slim.log'] = $log;
@@ -636,8 +647,10 @@ class Slim
     {
         if (is_callable($argument)) {
             //Register error handler
+            //print_r('--error is callable--');
             $this->error = $argument;
         } else {
+            //print_r('--error is not callable, invoke it !!--');
             //Invoke error handler
             $this->response->status(500);
             $this->response->body('');
@@ -1278,6 +1291,7 @@ class Slim
             $middleware_class = get_class($newMiddleware);
             throw new \RuntimeException("Circular Middleware setup detected. Tried to queue the same Middleware instance ({$middleware_class}) twice.");
         }
+        //print_r('--get class middleware-->'.  get_class($newMiddleware).'--');
         $newMiddleware->setApplication($this);
         $newMiddleware->setNextMiddleware($this->middleware[0]);
         array_unshift($this->middleware, $newMiddleware);
@@ -1299,13 +1313,22 @@ class Slim
         set_error_handler(array('\Slim\Slim', 'handleErrors'));
 
         //Apply final outer middleware layers
-        if ($this->config('debug')) {
+        if ($this->config('debug')  ) {
             //Apply pretty exceptions only in debug to avoid accidental information leakage in production
+            $this->add(new \Slim\Middleware\PrettyExceptions());
+        }
+        
+        /**
+         * zeynel dağlı
+         */
+        if($this->container['settings']['log.level'] <= \Slim\Log::ERROR) {
+            //print_r('--slim run kontrolor--');
             $this->add(new \Slim\Middleware\PrettyExceptions());
         }
 
         //Invoke middleware and application stack
         $this->middleware[0]->call();
+        //print_r('--slim run kontrolor2--');
 
         //Fetch status, header, and body
         list($status, $headers, $body) = $this->response->finalize();

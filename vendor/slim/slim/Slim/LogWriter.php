@@ -70,7 +70,9 @@ class LogWriter
      */
     public function write($message, $level = null)
     {
-        print_r($this->resource);
+        //print_r($this->resource);
+        //print_r((string)$message);
+        
         return fwrite($this->resource, (string) $message . PHP_EOL);
     }
 }

@@ -12,8 +12,11 @@ require 'vendor/autoload.php';
 
 $app = new \Slim\SlimExtended(array(
     'mode' => 'development',
-    'debug' => true,
-    'log.enabled' => true,
+    'debug' => false,
+    'log.enabled' => false,
+    'log.level' => \Slim\Log::CRITICAL,
+    'exceptions.rabbitMQ' => true,
+    'exceptions.rabbitMQ.logging' => \Slim\SlimExtended::EXCEPTIONS_RABBITMQ_FILE
     ));
 
 //$app->add(new \Slim\Middleware\MiddlewareTest());
@@ -56,7 +59,7 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     } */
     //echo $flowsStr;
     
-  
+   
     
     //print_r($app->container['request']);
     $requestObj = $app->container['request'];
@@ -178,7 +181,7 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     $app->halt(302, '{"error":"Something went wrong"}');
     $app->stop();*/
     
-    
+    //fopen('zeyn.txt');
     echo json_encode($resultArray);
     
 });

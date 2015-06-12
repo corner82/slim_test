@@ -42,7 +42,7 @@ namespace Slim\Middleware;
  * @author  Josh Lockhart
  * @since   1.0.0
  */
-class PrettyExceptions extends \Slim\Middleware
+class PrettyExceptions extends \Slim\Middleware implements \Utill\MQ\ImessagePublisher
 {
     /**
      * @var array
@@ -63,17 +63,48 @@ class PrettyExceptions extends \Slim\Middleware
      */
     public function call()
     {
+        //print_r('---PrettyExceptions call method---');
         try {
             $this->next->call();
         } catch (\Exception $e) {
+            //print_r('--pretty exceptions call()--');
             $log = $this->app->getLog(); // Force Slim to append log to env if not already
             $env = $this->app->environment();
             $env['slim.log'] = $log;
-            $env['slim.log']->error($e);
+            //$env['slim.log']->error($e);
             $this->app->contentType('text/html');
             $this->app->response()->status(500);
             $this->app->response()->body($this->renderBody($env, $e));
+            //print_r(json_encode(serialize($e)));
+            
+            // publis exception on message queue
+            $this->publishMessage($e);
         }
+    }
+    
+    /**
+     * message wrapper function
+     * @param \Exception $e
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function publishMessage($e = null, array $params = array()) {
+        date_default_timezone_set('Europe/Istanbul');
+        $exceptionMQ = new \Utill\MQ\exceptionMQ();
+        $exceptionMQ->setChannelProperties(array('queue.name' => 'invoice_queue'));
+        $message = new \Utill\MQ\MessageMQ\MQMessage();
+        ;
+        //$message->setMessageBody(array('testmessage body' => 'test cevap'));
+        //$message->setMessageBody($e);
+        $message->setMessageBody(array('message' => $e->getMessage(), 
+                                       'file' => $e->getFile(),
+                                       'line' => $e->getLine(),
+                                       'trace' => $e->getTraceAsString(),
+                                       'time'  => date('l jS \of F Y h:i:s A'),
+                                       'logFormat' => $this->app->container['settings']['exceptions.rabbitMQ.logging']));
+        $message->setMessageProperties(array('delivery_mode' => 2,
+                                             'content_type' => 'application/json'));
+        $exceptionMQ->setMessage($message->setMessage());
+        $exceptionMQ->basicPublish();
     }
 
     /**
