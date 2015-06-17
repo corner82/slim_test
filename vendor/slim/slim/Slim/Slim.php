@@ -150,6 +150,8 @@ class Slim
      */
     public function __construct(array $userSettings = array())
     {
+        
+        
         // Setup IoC container
         $this->container = new \Slim\Helper\Set();
         $this->container['settings'] = array_merge(static::getDefaultSettings(), $userSettings);
@@ -205,6 +207,16 @@ class Slim
              * @author Mustafa Zeynel Dağlı
              */
             $log->setExceptionsQueueLogging($c['settings']['exceptions.rabbitMQ.logging']);
+            /**
+             * set exception queue name
+             * @author Mustafa Zeynel Dağlı
+             */
+            $log->setExceptionsQueueName($c['settings']['exceptions.rabbitMQ.queue.name']);
+            /**
+             * set serial for message queue in log class
+             * @author Mustafa Zeynel Dağlı
+             */
+            $log->setSerial($c['settings']['request.serial']);
             //print_r('slim construct log level-->'.$c['settings']['log.level']);
             $log->setLevel($c['settings']['log.level']);
             $env = $c['environment'];
@@ -1310,6 +1322,7 @@ class Slim
      */
     public function run()
     {
+        date_default_timezone_set($this->container['settings']['time.zone']);
         set_error_handler(array('\Slim\Slim', 'handleErrors'));
 
         //Apply final outer middleware layers

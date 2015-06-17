@@ -113,6 +113,18 @@ class Log implements \Utill\MQ\ImessagePublisher
      * @author Mustafa Zeynel Dağlı
      */
     protected $exceptionsQueueLogging;
+    
+    /**
+     * @var String exceptions rabbitMQ queue name
+     * @author Mustafa Zeynel Dağlı
+     */
+    protected $exceptionsQueueName = 'exceptions_queue';
+    
+    /**
+     * serail for message queue
+     * @var string
+     */
+    protected $serial;
 
     /**
      * Constructor
@@ -123,6 +135,42 @@ class Log implements \Utill\MQ\ImessagePublisher
         $this->writer = $writer;
         $this->enabled = true;
         $this->level = self::DEBUG;
+    }
+    
+     /**
+     * set serail key
+     * @param string $serial
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setSerial($serial) {
+        $this->serial = $serial;
+    }
+    
+    /**
+     * get serail key
+     * @return string | null
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getSerial() {
+        return $this->serial;
+    }
+    
+    /**
+     * set exceptions queue name
+     * @param string $exceptionsQueueLogging
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setExceptionsQueueName($exceptionsQueueName) {
+        $this->exceptionsQueueName = $exceptionsQueueName;
+    }
+    
+    /**
+     * get exceptions queue name
+     * @return string | null
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getExceptionsQueueName() {
+        return $this->exceptionsQueueName;
     }
     
     /**
@@ -401,15 +449,16 @@ class Log implements \Utill\MQ\ImessagePublisher
      * @author Mustafa Zeynel Dağlı
      */
     public function publishMessage($object = null, array $params = array()) {
-        date_default_timezone_set('Europe/Istanbul');
         $exceptionMQ = new \Utill\MQ\exceptionMQ();
-        $exceptionMQ->setChannelProperties(array('queue.name' => 'invoice_queue'));
+        $exceptionMQ->setChannelProperties(array('queue.name' => $this->exceptionsQueueName));
         $message = new \Utill\MQ\MessageMQ\MQMessage();
         $message->setMessageBody(array('message' => $object->getMessage(), 
                                         'file' => $object->getFile(),
                                         'line' => $object->getLine(),
                                         'trace' => $object->getTraceAsString(),
                                         'time'  => date('l jS \of F Y h:i:s A'),
+                                        'serial'  => $this->serial,
+                                        'ip'  => \Utill\Env\serverVariables::getClientIp(),
                                         'logFormat' => $this->getExceptionsQueueLogging()));
          $message->setMessageProperties(array('delivery_mode' => 2,
                                               'content_type' => 'application/json'));

@@ -26,7 +26,8 @@ use PhpAmqpLib\Message\AMQPMessage;
   */
   class MiddlewareHMAC extends \Slim\Middleware implements \Slim\Interfaces\interfaceRequestParams, 
                                                             \Slim\Interfaces\interfaceRequest,
-                                                            \Slim\Interfaces\interfaceRequestCustomHeaderData
+                                                            \Slim\Interfaces\interfaceRequestCustomHeaderData,
+                                                            \Utill\MQ\ImessagePublisher
 {
     /**
      * @var array
@@ -114,6 +115,31 @@ use PhpAmqpLib\Message\AMQPMessage;
         $this->next->call();
     }
     
+    /**
+     * message wrapper function
+     * @param \Exception $e
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function publishMessage($e = null, array $params = array()) {
+        $exceptionMQ = new \Utill\MQ\hashMacMQ();
+        //print_r('---------'.$this->app->container['settings']['hmac.rabbitMQ.queue.name'].'------');
+        $exceptionMQ->setChannelProperties(array('queue.name' => $this->app->container['settings']['hmac.rabbitMQ.queue.name']));
+        $message = new \Utill\MQ\MessageMQ\MQMessage();
+        ;
+        //$message->setMessageBody(array('testmessage body' => 'test cevap'));
+        //$message->setMessageBody($e);
+       
+        $message->setMessageBody(array('message' => 'Hash not matched', 
+                                       'time'  => date('l jS \of F Y h:i:s A'),
+                                       'serial' => $this->app->container['settings']['request.serial'],
+                                       'ip' => \Utill\Env\serverVariables::getClientIp(),
+                                       'logFormat' => $this->app->container['settings']['hmac.rabbitMQ.logging']));
+        $message->setMessageProperties(array('delivery_mode' => 2,
+                                             'content_type' => 'application/json'));
+        $exceptionMQ->setMessage($message->setMessage());
+        $exceptionMQ->basicPublish();
+    }
+    
     protected function calcExpireTime() {
         
     }
@@ -148,15 +174,16 @@ use PhpAmqpLib\Message\AMQPMessage;
         $this->hmacObj->setPublicKey($this->getRequestHeaderData()['X-Public']);
         $this->hmacObj->setNonce($this->getRequestHeaderData()['X-Nonce']);
         // bu private key kısmı veri tabanından alınır hale gelecek
-        $this->hmacObj->setPrivateKey('e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
+        $this->hmacObj->setPrivateKey('zze249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e');
         $this->hmacObj->makeHmac();
         
         //print_r($hmacObj->getHash()); 
         
         if($this->hmacObj->getHash() != $this->getRequestHeaderData()['X-Hash'])  {
             //print_r ('-----hash eşit değil----');
+            $this->publishMessage();
             $hashNotMatchForwarder = new \Utill\Forwarder\hashNotMatchForwarder();
-            $hashNotMatchForwarder->redirect();
+            //$hashNotMatchForwarder->redirect();
             
         } else {
            //print_r ('-----hash eşit ----'); 

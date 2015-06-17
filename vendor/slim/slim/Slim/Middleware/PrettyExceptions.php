@@ -86,11 +86,13 @@ class PrettyExceptions extends \Slim\Middleware implements \Utill\MQ\ImessagePub
      * message wrapper function
      * @param \Exception $e
      * @author Mustafa Zeynel Dağlı
+     * @todo Time zone can be made parametric(a class constant call maybe)
      */
     public function publishMessage($e = null, array $params = array()) {
-        date_default_timezone_set('Europe/Istanbul');
+        //date_default_timezone_set('Europe/Istanbul');
+        
         $exceptionMQ = new \Utill\MQ\exceptionMQ();
-        $exceptionMQ->setChannelProperties(array('queue.name' => 'invoice_queue'));
+        $exceptionMQ->setChannelProperties(array('queue.name' => $this->app->container['settings']['exceptions.rabbitMQ.queue.name']));
         $message = new \Utill\MQ\MessageMQ\MQMessage();
         ;
         //$message->setMessageBody(array('testmessage body' => 'test cevap'));
@@ -100,6 +102,7 @@ class PrettyExceptions extends \Slim\Middleware implements \Utill\MQ\ImessagePub
                                        'line' => $e->getLine(),
                                        'trace' => $e->getTraceAsString(),
                                        'time'  => date('l jS \of F Y h:i:s A'),
+                                       'serial' => $this->app->container['settings']['request.serial'],
                                        'logFormat' => $this->app->container['settings']['exceptions.rabbitMQ.logging']));
         $message->setMessageProperties(array('delivery_mode' => 2,
                                              'content_type' => 'application/json'));

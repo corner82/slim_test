@@ -6,14 +6,23 @@ use Slim\Slim;
 
 
 
-class SlimExtended extends Slim {
+class SlimExtended extends Slim implements \Utill\MQ\ImessagePublisher{
     
     /**
      * exceptions and rabbitMQ configuration parameters
      * @author Mustafa Zeynel Dağlı
      */
-    const EXCEPTIONS_RABBITMQ_DATABASE = 'database';
-    const EXCEPTIONS_RABBITMQ_FILE = 'file';
+    const LOG_RABBITMQ_DATABASE = 'database';
+    const LOG_RABBITMQ_FILE = 'file';
+    const EXCEPTIONS_RABBITMQ_QUEUE_NAME = 'exceptions_queue';
+    
+    /**
+     * time zones decriptions
+     * @author Mustafa Zeynel Dağlı
+     */
+    const TIME_ZONE_ISTANBUL = 'Europe/Istanbul';
+
+
     
     /**
     * @var string
@@ -83,11 +92,130 @@ class SlimExtended extends Slim {
             'http.version' => '1.1',
             // Routing
             'routes.case_sensitive' => true,
-            //Exceptions / rabbitMQ management
+            //Exceptions / rabbitMQ management Zeynel Dağlı
+            'exceptions.rabbitMQ.queue.name' => 'exceptions_queue',
             'exceptions.rabbitMQ' => true,
-            'exceptions.rabbitMQ.logging' => self::EXCEPTIONS_RABBITMQ_FILE
+            'exceptions.rabbitMQ.logging' => self::LOG_RABBITMQ_FILE,
+            // request serial for every request, this will be used for logging and message queue Zeynel Dağlı
+            'request.serial' => \Utill\Serial\serialCreater::cretaSerial(),
+            // Exceptions / HMAC authentication configurations Zeynel Dağlı
+            'hmac.rabbitMQ.queue.name' => 'hmac_queue',
+            'hmac.rabbitMQ.logging' => self::LOG_RABBITMQ_FILE,
+            'hmac.rabbitMQ' => true,
+            // Rest service call log message queue Zeynel Dağlı
+            'restEntry.rabbitMQ.queue.name' => 'restEntry_queue',
+            'restEntry.rabbitMQ.logging' => self::LOG_RABBITMQ_FILE,
+            'restEntry.rabbitMQ' => true,
+            // default time zone Zeynel Dağlı
+            'time.zone' => self::TIME_ZONE_ISTANBUL
+            
         );
     }
+    
+     /**
+     * Run
+     *
+     * This method invokes the middleware stack, including the core Slim application;
+     * the result is an array of HTTP status, header, and body. These three items
+     * are returned to the HTTP client.
+     */
+    public function run()
+    {
+        /**
+         * set time zone for log and message queue message body
+         * @author Mustafa Zeynel Dağlı
+         */
+        date_default_timezone_set($this->container['settings']['time.zone']);
+        
+        /**
+         * if rest service entry logging conf. true, publish to message queue
+         * @author Mustafa Zeynel Dağlı
+         */
+        if($this->container['settings']['restEntry.rabbitMQ'] == true)$this->publishMessage();
+        
+        set_error_handler(array('\Slim\Slim', 'handleErrors'));
+
+        //Apply final outer middleware layers
+        if ($this->config('debug')  ) {
+            //Apply pretty exceptions only in debug to avoid accidental information leakage in production
+            $this->add(new \Slim\Middleware\PrettyExceptions());
+        }
+        
+        /**
+         * zeynel dağlı
+         */
+        if($this->container['settings']['log.level'] <= \Slim\Log::ERROR) {
+            //print_r('--slim run kontrolor--');
+            $this->add(new \Slim\Middleware\PrettyExceptions());
+        }
+
+        //Invoke middleware and application stack
+        $this->middleware[0]->call();
+        //print_r('--slim run kontrolor2--');
+
+        //Fetch status, header, and body
+        list($status, $headers, $body) = $this->response->finalize();
+
+        // Serialize cookies (with optional encryption)
+        \Slim\Http\Util::serializeCookies($headers, $this->response->cookies, $this->settings);
+
+        //Send headers
+        if (headers_sent() === false) {
+            //Send status
+            if (strpos(PHP_SAPI, 'cgi') === 0) {
+                header(sprintf('Status: %s', \Slim\Http\Response::getMessageForCode($status)));
+            } else {
+                header(sprintf('HTTP/%s %s', $this->config('http.version'), \Slim\Http\Response::getMessageForCode($status)));
+            }
+
+            //Send headers
+            foreach ($headers as $name => $value) {
+                $hValues = explode("\n", $value);
+                foreach ($hValues as $hVal) {
+                    header("$name: $hVal", false);
+                }
+            }
+        }
+
+        //Send body, but only if it isn't a HEAD request
+        if (!$this->request->isHead()) {
+            echo $body;
+        }
+
+        $this->applyHook('slim.after');
+
+        restore_error_handler();
+    }
+    
+    /**
+     * message wrapper function
+     * @param \Exception $e
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function publishMessage($e = null, array $params = array()) {
+        $exceptionMQ = new \Utill\MQ\restEntryMQ();
+        $exceptionMQ->setChannelProperties(array('queue.name' => $this->container['settings']['restEntry.rabbitMQ.queue.name']));
+        $message = new \Utill\MQ\MessageMQ\MQMessage();
+        ;
+        //$message->setMessageBody(array('testmessage body' => 'test cevap'));
+        //$message->setMessageBody($e);
+       
+        $message->setMessageBody(array('message' => 'Rest service has been used', 
+                                       'time'  => date('l jS \of F Y h:i:s A'),
+                                       'serial' => $this->container['settings']['request.serial'],
+                                       'ip' => \Utill\Env\serverVariables::getClientIp(),
+                                       'url' => $this->request()->getUrl(),
+                                       'path' => $this->request()->getPath(),
+                                       'method' => $this->request()->getMethod(),
+                                       'params' => json_encode($this->request()->params()),
+                                       'logFormat' => $this->container['settings']['restEntry.rabbitMQ.logging']));
+        $message->setMessageProperties(array('delivery_mode' => 2,
+                                             'content_type' => 'application/json'));
+        $exceptionMQ->setMessage($message->setMessage());
+        $exceptionMQ->basicPublish();
+    }
+
+    
     
     /**
      * set encrytion class obj

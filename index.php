@@ -16,7 +16,8 @@ $app = new \Slim\SlimExtended(array(
     'log.enabled' => false,
     'log.level' => \Slim\Log::CRITICAL,
     'exceptions.rabbitMQ' => true,
-    'exceptions.rabbitMQ.logging' => \Slim\SlimExtended::EXCEPTIONS_RABBITMQ_FILE
+    'exceptions.rabbitMQ.logging' => \Slim\SlimExtended::LOG_RABBITMQ_FILE,
+    'exceptions.rabbitMQ.queue.name' => \Slim\SlimExtended::EXCEPTIONS_RABBITMQ_QUEUE_NAME
     ));
 
 //$app->add(new \Slim\Middleware\MiddlewareTest());

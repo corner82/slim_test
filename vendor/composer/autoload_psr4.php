@@ -26,4 +26,6 @@ return array(
     'Encrypt\\' => array($vendorDir . '/encrypt'),
     'Utill\\Forwarder\\' => array($vendorDir . '/utill/forwarder'),
     'Utill\\MQ\\' => array($vendorDir . '/utill/mq'),
+    'Utill\\Serial\\' => array($vendorDir . '/utill/serial'),
+    'Utill\\Env\\' => array($vendorDir . '/utill/env'),
 );
