@@ -131,7 +131,7 @@ class SlimExtended extends Slim implements \Utill\MQ\ImessagePublisher{
          * if rest service entry logging conf. true, publish to message queue
          * @author Mustafa Zeynel Dağlı
          */
-        if($this->container['settings']['restEntry.rabbitMQ'] == true)$this->publishMessage();
+        if($this->container['settings']['restEntry.rabbitMQ'] == true) $this->publishMessage();
         
         set_error_handler(array('\Slim\Slim', 'handleErrors'));
 

@@ -12,9 +12,9 @@ require 'vendor/autoload.php';
 
 $app = new \Slim\SlimExtended(array(
     'mode' => 'development',
-    'debug' => false,
-    'log.enabled' => false,
-    'log.level' => \Slim\Log::CRITICAL,
+    'debug' => true,
+    'log.enabled' => true,
+    'log.level' => \Slim\Log::INFO,
     'exceptions.rabbitMQ' => true,
     'exceptions.rabbitMQ.logging' => \Slim\SlimExtended::LOG_RABBITMQ_FILE,
     'exceptions.rabbitMQ.queue.name' => \Slim\SlimExtended::EXCEPTIONS_RABBITMQ_QUEUE_NAME

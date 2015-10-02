@@ -26,6 +26,9 @@ and open the template in the editor.
         
         
          $('#tt_grid').datagrid({
+             onSelect : function () {
+ 
+             },
              url :'../slim_proxy_V0.2/SlimProxyBoot.php',
             //url :'index.php/getReports_rpt',
             queryParams : { url : 'getReports_test',
@@ -52,8 +55,7 @@ and open the template in the editor.
 
                   ]],
                 });
-           
-    
+
     });
     
 </script>
@@ -67,8 +69,8 @@ and open the template in the editor.
                       contenteditable="" style="height:440px;" 
              accesskey="">
            </table>
+            
        </div>
-
 
 </body>
 </html>
