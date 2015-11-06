@@ -52,11 +52,41 @@ class SlimExtended extends Slim implements \Utill\MQ\ImessagePublisher{
      * @author Mustafa Zeynel Dağlı
      */
     protected $encryptKey = 'testKey';
+    
+    /**
+     * Zend service manager instance in Slimm Application
+     * @var Zend\ServiceManager\ServiceLocatorInterface
+     */
+    protected $serviceManager;
 
     public function __construct(array $userSettings = array()) {
         parent::__construct($userSettings);
     }
     
+    /**
+     * injects Zend service manager instance in Slimm Application
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceManager
+     * @return \Slim\SlimExtended
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setServiceManager(\Zend\ServiceManager\ServiceLocatorInterface $serviceManager) {
+        /*if ($this->serviceManager == null ) {
+            $this->serviceManager = $serviceManager;
+        }*/
+        $this->serviceManager = $serviceManager;
+        return $this;
+    }
+    
+    /**
+     * gets Zend service manager instance from Slimm Application
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getServiceManager() {
+        return $this->serviceManager;
+    }
+
+
     /**
      * default settings extended for rabbitMQ and exceptions managing configuration
      * Get default application settings
