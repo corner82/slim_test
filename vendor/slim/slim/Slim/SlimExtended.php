@@ -6,7 +6,8 @@ use Slim\Slim;
 
 
 
-class SlimExtended extends Slim implements \Utill\MQ\ImessagePublisher{
+class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
+                                            \Services\DalManagerInterface {
     
     /**
      * exceptions and rabbitMQ configuration parameters
@@ -58,9 +59,40 @@ class SlimExtended extends Slim implements \Utill\MQ\ImessagePublisher{
      * @var Zend\ServiceManager\ServiceLocatorInterface
      */
     protected $serviceManager;
+    
+    /**
+     * DAl service manager instance extended from zend service manager in Slimm Application
+     * @var Services\Database\DalManager
+     */
+    protected $dalManager;
 
     public function __construct(array $userSettings = array()) {
         parent::__construct($userSettings);
+    }
+    
+    /**
+     * injects Dal manager instance extended from Zend
+     * service manager instance in Slimm Application
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceManager
+     * @return \Slim\SlimExtended
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setDalManager(\Zend\ServiceManager\ServiceLocatorInterface $serviceManager) {
+        /*if ($this->serviceManager == null ) {
+            $this->serviceManager = $serviceManager;
+        }*/
+        $this->dalManager = $serviceManager;
+        return $this;
+    }
+    
+    /**
+     * gets Dal manager instance extended from 
+     * Zend service manager instance from Slimm Application
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getDAlManager() {
+        return $this->dalManager;
     }
     
     /**

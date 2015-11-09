@@ -1,8 +1,8 @@
 <?php
 
-namespace Utill\Service\Manager;
+namespace DAL;
 
-class config{
+class DalManagerConfig{
     
     /**
      * config array for zend service manager config
@@ -13,10 +13,10 @@ class config{
         // Should be compatible with Zend\ServiceManager\Config.
          'service_manager' => array(
              'invokables' => array(
-                 'test' => 'Utill\BLL\Test\Test'
+                 //'test' => 'Utill\BLL\Test\Test'
              ),
              'factories' => [
-                 'pgConnectFactory' => 'Services\Database\PostgreSQLConnect',
+                 'reportConfiguration' => 'DAL\Factory\PDO\ReportConfigurationFactory',
              ],  
 
          ),
@@ -36,5 +36,7 @@ class config{
     }
 
 }
+
+
 
 

@@ -30,6 +30,7 @@ $res->header('Access-Control-Allow-Origin', '*');
 $res->header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS");
 
 //$app->add(new \Slim\Middleware\MiddlewareTest());
+$app->add(new \Slim\Middleware\MiddlewareDalManager());
 $app->add(new \Slim\Middleware\MiddlewareServiceManager());
 $app->add(new \Slim\Middleware\MiddlewareHMAC());
 
@@ -71,12 +72,17 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     } */
     //echo $flowsStr;
     
-
+    //$app->getServiceManager()->get('pgConnectFactory');
+    //print_r($app->getServiceManager()->get('pgConnectFactory')); 
     
     //print_r($app->container['request']);
     $requestObj = $app->container['request'];
     //print_r($requestObj->params());
     //print_r($requestObj->isXhr());
+    
+    $app->getDalManager()->get('reportConfiguration');
+    //$this->app->getServiceManager()->get('test');
+    $app->getServiceManager()->get('pgConnectFactory'); 
     
     
     if(isset($_GET['page']) && $_GET['page']!="" && isset($_GET['rows']) && $_GET['rows']!="") {
@@ -181,7 +187,7 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     }
     
     //{field:'opportunity',title:'Opportunity',width:80},
-    
+    $app->getServiceManager()->get('test'); 
     
     $app->response()->header("Content-Type", "application/json");
     

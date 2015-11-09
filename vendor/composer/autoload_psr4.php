@@ -30,4 +30,9 @@ return array(
     'Utill\\Env\\' => array($vendorDir . '/utill/env'),
     'Utill\\Service\\Manager\\' => array($vendorDir . '/utill/service/manager'),
     'Utill\\BLL\\Test\\' => array($vendorDir . '/utill/bll/test'),
+    'Services\\Database\\' => array($vendorDir . '/services/database'),
+    'Services\\' => array($vendorDir . '/services'),
+    'DAL\\' => array($vendorDir . '/dal'),
+    'DAL\\PDO\\' => array($vendorDir . '/dal/pdo'),
+    'DAL\\Factory\\PDO\\' => array($vendorDir . '/dal/dalFactory/pdo'),
 );

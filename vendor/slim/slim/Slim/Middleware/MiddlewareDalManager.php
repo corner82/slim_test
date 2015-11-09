@@ -23,7 +23,7 @@ namespace Slim\Middleware;
   * @author     Josh Lockhart
   * @since      1.6.0
   */
-  class MiddlewareServiceManager extends \Slim\Middleware 
+  class MiddlewareDalManager extends \Slim\Middleware 
 {
    
     /**
@@ -57,14 +57,13 @@ namespace Slim\Middleware;
      */
     public function call()
     {
-        //print_r('--middlewareServiceManager call()--');
-        $serviceManagerUtillConfigObject = new \Utill\Service\Manager\config();
-        $this->serviceManagerConfig = new \Zend\ServiceManager\Config(
-                                                            $serviceManagerUtillConfigObject->getConfig());
-        $serviceManager = new \Zend\ServiceManager\ServiceManager($this->serviceManagerConfig);
-        $serviceManager->setService('slimmApp', $this->app);
-        $this->app->setServiceManager($serviceManager);
-        
+        //print_r('--middlewareDalManager call()--');
+        $dalManagerConfigObject = new \DAL\DalManagerConfig();
+        $managerConfig = new \Zend\ServiceManager\Config($dalManagerConfigObject->getConfig());
+        $dalManager = new \DAL\DalManager($managerConfig);
+        $dalManager->setService('slimmApp', $this->app);
+        $this->app->setDalManager($dalManager);
+
         $this->next->call();
     }
 
