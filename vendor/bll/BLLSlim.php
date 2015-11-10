@@ -1,11 +1,15 @@
 <?php
 
-namespace DAL;
+namespace BLL;
 
-abstract class AbstractDalSlimm extends AbstractDal
-                                implements \DAL\DalInterface, \Slim\SlimAppInterface {
+class BLLSlim extends \BLL\AbstractBLL implements 
+                                            \Slim\SlimAppInterface{
     
-    /**
+    public function __construct() {
+        
+    }
+
+                                                                                                /**
      * Slim application instance
      * @var Slim\Slim
      */
@@ -27,3 +31,4 @@ abstract class AbstractDalSlimm extends AbstractDal
         $this->slimApp = $slimApp;
     }
 }
+

@@ -3,6 +3,12 @@
 namespace DAL\PDO;
 
 class ReportConfiguration extends \DAL\AbstractDalSlimm {
+    
+    public function test() {
+        //print_r('--test DAl Object--');
+    }
+
+
     public function delete($id = null) {
         
     }

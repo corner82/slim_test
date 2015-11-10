@@ -1,8 +1,8 @@
 <?php
 
-namespace DAL;
+namespace BLL;
 
-class DalManagerConfig{
+class BLLManagerConfig{
     
     /**
      * config array for zend service manager config
@@ -14,9 +14,10 @@ class DalManagerConfig{
          'service_manager' => array(
              'invokables' => array(
                  //'test' => 'Utill\BLL\Test\Test'
+                 'reportConfigurationBLL' => 'BLL\BLL\ReportConfiguration'
              ),
              'factories' => [
-                 'reportConfigurationPDO' => 'DAL\Factory\PDO\ReportConfigurationFactory',
+                 //'reportConfigurationPDO' => 'BLL\BLL\ReportConfiguration',
              ],  
 
          ),

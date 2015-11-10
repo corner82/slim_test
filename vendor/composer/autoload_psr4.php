@@ -35,4 +35,6 @@ return array(
     'DAL\\' => array($vendorDir . '/dal'),
     'DAL\\PDO\\' => array($vendorDir . '/dal/pdo'),
     'DAL\\Factory\\PDO\\' => array($vendorDir . '/dal/dalFactory/pdo'),
+    'BLL\\' => array($vendorDir . '/bll'),
+    'BLL\\BLL\\' => array($vendorDir . '/bll/bll'),
 );

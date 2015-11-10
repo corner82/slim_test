@@ -7,7 +7,8 @@ use Slim\Slim;
 
 
 class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
-                                            \Services\DalManagerInterface {
+                                            \DAL\DalManagerInterface,
+                                            \BLL\BLLManagerInterface{
     
     /**
      * exceptions and rabbitMQ configuration parameters
@@ -62,12 +63,39 @@ class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
     
     /**
      * DAl service manager instance extended from zend service manager in Slimm Application
-     * @var Services\Database\DalManager
+     * @var DAL\DalManager
      */
     protected $dalManager;
+    
+    /**
+     * DAl service manager instance extended from zend service manager in Slimm Application
+     * @var BLL\BLLManager
+     */
+    protected $BLLManager;
 
     public function __construct(array $userSettings = array()) {
         parent::__construct($userSettings);
+    }
+    
+    /**
+     * gets BLL manager instance extended from 
+     * Zend service manager instance from Slimm Application
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getBLLManager() {
+        return $this->BLLManager;
+    }
+    
+    /**
+     * injects BLL manager instance extended from Zend
+     * service manager instance in Slimm Application
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceManager
+     * @return \Slim\SlimExtended
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setBLLManager(\Zend\ServiceManager\ServiceLocatorInterface $serviceManager) {
+        $this->BLLManager = $serviceManager;
     }
     
     /**
@@ -370,5 +398,8 @@ class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
     public function setSecurityContent($securityContent) {
          $this->privateHash = $securityContent;
     }
+
+    
+
 }
 

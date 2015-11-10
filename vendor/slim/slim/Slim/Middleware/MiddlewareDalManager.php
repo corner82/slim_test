@@ -61,7 +61,7 @@ namespace Slim\Middleware;
         $dalManagerConfigObject = new \DAL\DalManagerConfig();
         $managerConfig = new \Zend\ServiceManager\Config($dalManagerConfigObject->getConfig());
         $dalManager = new \DAL\DalManager($managerConfig);
-        $dalManager->setService('slimmApp', $this->app);
+        $dalManager->setService('slimApp', $this->app);
         $this->app->setDalManager($dalManager);
 
         $this->next->call();

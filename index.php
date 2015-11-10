@@ -30,6 +30,7 @@ $res->header('Access-Control-Allow-Origin', '*');
 $res->header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS");
 
 //$app->add(new \Slim\Middleware\MiddlewareTest());
+$app->add(new \Slim\Middleware\MiddlewareBLLManager());
 $app->add(new \Slim\Middleware\MiddlewareDalManager());
 $app->add(new \Slim\Middleware\MiddlewareServiceManager());
 $app->add(new \Slim\Middleware\MiddlewareHMAC());
@@ -80,10 +81,11 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     //print_r($requestObj->params());
     //print_r($requestObj->isXhr());
     
-    $app->getDalManager()->get('reportConfiguration');
+    //$app->getDalManager()->get('reportConfigurationPDO');
     //$this->app->getServiceManager()->get('test');
-    $app->getServiceManager()->get('pgConnectFactory'); 
-    
+    //$app->getServiceManager()->get('pgConnectFactory'); 
+    $BLL = $app->getBLLManager()->get('reportConfigurationBLL'); 
+    $BLL->test();
     
     if(isset($_GET['page']) && $_GET['page']!="" && isset($_GET['rows']) && $_GET['rows']!="") {
         $offset = ((intval($_GET['page'])-1)* intval($_GET['rows']));

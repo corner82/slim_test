@@ -1074,6 +1074,7 @@ class ServiceManager implements ServiceLocatorInterface
                 $invokable
             ));
         }
+        
         $instance = new $invokable;
         return $instance;
     }

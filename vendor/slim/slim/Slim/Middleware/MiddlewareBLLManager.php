@@ -23,7 +23,7 @@ namespace Slim\Middleware;
   * @author     Josh Lockhart
   * @since      1.6.0
   */
-  class MiddlewareServiceManager extends \Slim\Middleware 
+  class MiddlewareBLLManager extends \Slim\Middleware 
 {
    
     /**
@@ -57,14 +57,14 @@ namespace Slim\Middleware;
      */
     public function call()
     {
-        //print_r('--middlewareServiceManager call()--');
-        $serviceManagerUtillConfigObject = new \Utill\Service\Manager\config();
-        $this->serviceManagerConfig = new \Zend\ServiceManager\Config(
-                                                            $serviceManagerUtillConfigObject->getConfig());
-        $serviceManager = new \Zend\ServiceManager\ServiceManager($this->serviceManagerConfig);
-        $serviceManager->setService('slimApp', $this->app);
-        $this->app->setServiceManager($serviceManager);
-        
+        //print_r('--middlewareDalManager call()--');
+        $BLLManagerConfigObject = new \BLL\BLLManagerConfig;
+        $managerConfig = new \Zend\ServiceManager\Config($BLLManagerConfigObject->getConfig());
+        $BLLManager = new \BLL\BLLManager($managerConfig);
+        $BLLManager->setService('slimApp', $this->app);
+        $this->app->setBLLManager($BLLManager);
+        //$test = $BLLManager->get('reportConfigurationBLL');
+        //print_r($test->getSlimApp());
         $this->next->call();
     }
 

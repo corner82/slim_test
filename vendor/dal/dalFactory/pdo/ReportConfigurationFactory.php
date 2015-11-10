@@ -9,7 +9,7 @@ class ReportConfigurationFactory implements \Zend\ServiceManager\FactoryInterfac
     
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
         $reportConfiguration = new \DAL\PDO\ReportConfiguration();
-        $slimApp = $serviceLocator->get('slimmApp');
+        $slimApp = $serviceLocator->get('slimApp');
         //print_r($slimApp);
         $reportConfiguration->setSlimApp($slimApp);
         $reportConfiguration->fillGrid();
