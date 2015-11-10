@@ -2,7 +2,7 @@
 
 namespace DAL\PDO;
 
-class ReportConfiguration extends \DAL\AbstractDalSlimm {
+class ReportConfiguration extends \DAL\DalSlim {
     
     public function test() {
         //print_r('--test DAl Object--');

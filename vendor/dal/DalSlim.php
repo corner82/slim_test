@@ -2,8 +2,8 @@
 
 namespace DAL;
 
-abstract class AbstractDalSlimm extends AbstractDal
-                                implements \DAL\DalInterface, \Slim\SlimAppInterface {
+ class DalSlim extends AbstractDal
+                                implements  \Slim\SlimAppInterface {
     
     /**
      * Slim application instance
@@ -26,4 +26,21 @@ abstract class AbstractDalSlimm extends AbstractDal
     public function setSlimApp(\Slim\Slim $slimApp) {
         $this->slimApp = $slimApp;
     }
+
+    public function delete($id = null) {
+        
+    }
+
+    public function getAll() {
+        
+    }
+
+    public function insert($params = array()) {
+        
+    }
+
+    public function update($id = null) {
+        
+    }
+
 }
