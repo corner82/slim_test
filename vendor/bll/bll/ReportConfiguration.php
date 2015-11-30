@@ -12,6 +12,11 @@ class ReportConfiguration extends \BLL\BLLSlim{
         $DAL = $this->slimApp->getDALManager()->get('reportConfigurationPDO');
         $DAL->test();
     }
+    
+    public function fillReportConfigGrid($args = array()) {
+        $DAL = $this->slimApp->getDALManager()->get('reportConfigurationPDO');
+        $DAL->fillGrid($args);
+    }
 
 }
 

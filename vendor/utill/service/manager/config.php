@@ -16,7 +16,7 @@ class config{
                  'test' => 'Utill\BLL\Test\Test'
              ),
              'factories' => [
-                 'pgConnectFactory' => 'Services\Database\PostgreSQLConnect',
+                 'pgConnectFactory' => 'Services\Database\Postgresql\PostgreSQLConnectPDO',
              ],  
 
          ),

@@ -1,6 +1,6 @@
 <?php
 
-namespace DAL;
+namespace BLL;
 
 interface DalInterface {
     public function getAll();

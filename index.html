@@ -13,27 +13,52 @@ and open the template in the editor.
      
 
     <!-- Loading Flat UI -->
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="themes/bootstrap/easyui.css" rel="stylesheet">
     
 
     <script src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
     
 </head>
 <body>
 <script>
     jQuery(document).ready(function() {
         
+        $.ajax({
+            url : '../slim_proxy_V0.2/SlimProxyBoot.php',   
+            data : {
+
+                    url : 'getDynamicForm_test',
+                    pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+            },
+            type: 'GET',
+            dataType : 'html',
+            success: function(data, textStatus, jqXHR) {
+
+                 $('.result').html(data);
+                 //$('.result').append(data);
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+
         
-         $('#tt_grid').datagrid({
+        
+        
+        
+    $('#tt_grid').datagrid({
              onSelect : function () {
  
              },
              url :'../slim_proxy_V0.2/SlimProxyBoot.php',
             //url :'index.php/getReports_rpt',
-            queryParams : { url : 'getReports_test',
+            queryParams : { 
+                            url : 'getReports_test',
                             pk : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
-                        },
+                          },
             method : 'GET',
             sortName : 'r_date',
             collapsible:true,
@@ -45,18 +70,17 @@ and open the template in the editor.
             multiSort : true,
             singleSelect : true,
             columns:[[
-                  {field:'report_name',title:'Report Name',width:100,sortable:true},
-                  {field:'r_date',title:'Report Date',width:100,sortable:true},
-                  {field:'company_name',title:'Company',width:100,sortable:true},
-                  {field:'company_id',title:'Company ID',width:100,sortable:true,hidden:true},
-                  {field:'user_name',title:'User Name',width:100},
-                  {field:'name',title:'Name',width:100},
-                  {field:'surname',title:'Surname',width:100},
-
-                  ]],
-                });
-
+                {field:'report_name',title:'Report Name',width:100,sortable:true},
+                {field:'r_date',title:'Report Date',width:100,sortable:true},
+                {field:'company_name',title:'Company',width:100,sortable:true},
+                {field:'company_id',title:'Company ID',width:100,sortable:true,hidden:true},
+                {field:'user_name',title:'User Name',width:100},
+                {field:'name',title:'Name',width:100},
+                {field:'surname',title:'Surname',width:100},
+            ]],
     });
+
+});
     
 </script>
 
@@ -71,6 +95,9 @@ and open the template in the editor.
            </table>
             
        </div>
+        <div class="result">
+
+        </div>
 
 </body>
 </html>
