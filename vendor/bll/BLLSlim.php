@@ -2,8 +2,8 @@
 
 namespace BLL;
 
-class BLLSlim extends \BLL\AbstractBLL implements 
-                                            \Slim\SlimAppInterface{
+abstract class BLLSlim extends \BLL\AbstractBLL implements 
+                                            \Slim\SlimAppInterface, \DAL\DalInterface{
     
     public function __construct() {
         
