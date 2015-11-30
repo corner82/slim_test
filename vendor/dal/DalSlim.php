@@ -39,7 +39,7 @@ namespace DAL;
         
     }
 
-    public function update($id = null) {
+    public function update($id = null, $params = array()) {
         
     }
 
