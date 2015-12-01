@@ -12,7 +12,6 @@ class ReportConfigurationFactory implements \Zend\ServiceManager\FactoryInterfac
         $slimApp = $serviceLocator->get('slimApp');
         //print_r($slimApp);
         $reportConfiguration->setSlimApp($slimApp);
-        $reportConfiguration->fillGrid();
         return $reportConfiguration;
         
     }
