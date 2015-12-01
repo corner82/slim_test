@@ -1076,5 +1076,50 @@
             "db",
             "zf2"
         ]
+    },
+    {
+        "name": "panique/pdo-debug",
+        "version": "0.1",
+        "version_normalized": "0.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/panique/pdo-debug.git",
+            "reference": "fbf360cfe21fce006f0bee58ce8c50035dc3dd3a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/panique/pdo-debug/zipball/fbf360cfe21fce006f0bee58ce8c50035dc3dd3a",
+            "reference": "fbf360cfe21fce006f0bee58ce8c50035dc3dd3a",
+            "shasum": ""
+        },
+        "time": "2014-09-08 18:15:46",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "pdo-debug.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Panique",
+                "homepage": "http://careers.stackoverflow.com/panique",
+                "role": "Developer"
+            }
+        ],
+        "description": "A super-simple function that returns the full SQL query from your PDO statements",
+        "homepage": "https://github.com/panique/pdo-debug",
+        "keywords": [
+            "debug",
+            "debugger",
+            "log",
+            "logger",
+            "pdo",
+            "sql"
+        ]
     }
 ]

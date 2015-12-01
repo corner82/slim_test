@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b8e29c48342d8e429ce66efe23a4e147",
+    "hash": "0eb7c008bed02ed7076078614f1ca2c1",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -32,6 +32,49 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "time": "2014-12-30 15:22:37"
+        },
+        {
+            "name": "panique/pdo-debug",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/panique/pdo-debug.git",
+                "reference": "fbf360cfe21fce006f0bee58ce8c50035dc3dd3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/panique/pdo-debug/zipball/fbf360cfe21fce006f0bee58ce8c50035dc3dd3a",
+                "reference": "fbf360cfe21fce006f0bee58ce8c50035dc3dd3a",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "pdo-debug.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Panique",
+                    "homepage": "http://careers.stackoverflow.com/panique",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A super-simple function that returns the full SQL query from your PDO statements",
+            "homepage": "https://github.com/panique/pdo-debug",
+            "keywords": [
+                "debug",
+                "debugger",
+                "log",
+                "logger",
+                "pdo",
+                "sql"
+            ],
+            "time": "2014-09-08 18:15:46"
         },
         {
             "name": "psr/log",
