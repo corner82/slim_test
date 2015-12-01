@@ -75,41 +75,9 @@ $app->get("/getDynamicForm_test/", function () use ($app) {
     $form->addElement(new \PFBC\Element\Select("Select:", "Select", $options));
     $form->addElement(new \PFBC\Element\Radio("Radio Buttons:", "RadioButtons", $options));
     $form->addElement(new \PFBC\Element\Checkbox("Checkboxes:", "Checkboxes", $options));
-    /*$form->addElement(new Element\HTML('<legend>HTML5</legend>'));
-    $form->addElement(new Element\Phone("Phone:", "Phone"));
-    $form->addElement(new Element\Search("Search:", "Search"));
-    $form->addElement(new Element\Url("Url:", "Url"));
-    $form->addElement(new Element\Email("Email:", "Email"));
-    $form->addElement(new Element\Date("Date:", "Date"));
-    $form->addElement(new Element\DateTime("DateTime:", "DateTime"));
-    $form->addElement(new Element\DateTimeLocal("DateTime-Local:", "DateTimeLocal"));
-    $form->addElement(new Element\Month("Month:", "Month"));
-    $form->addElement(new Element\Week("Week:", "Week"));
-    $form->addElement(new Element\Time("Time:", "Time"));
-    $form->addElement(new Element\Number("Number:", "Number"));
-    $form->addElement(new Element\Range("Range:", "Range"));
-    $form->addElement(new Element\Color("Color:", "Color"));
-    $form->addElement(new Element\HTML('<legend>jQuery UI</legend>'));
-    $form->addElement(new Element\jQueryUIDate("Date:", "jQueryUIDate"));
-    $form->addElement(new Element\Checksort("Checksort:", "Checksort", $options));
-    $form->addElement(new Element\Sort("Sort:", "Sort", $options));
-    $form->addElement(new Element\HTML('<legend>WYSIWYG Editor</legend>'));
-    $form->addElement(new Element\TinyMCE("TinyMCE:", "TinyMCE"));
-    $form->addElement(new Element\CKEditor("CKEditor:", "CKEditor"));
-    $form->addElement(new Element\HTML('<legend>Custom/Other</legend>'));
-    $form->addElement(new Element\State("State:", "State"));
-    $form->addElement(new Element\Country("Country:", "Country"));
-    $form->addElement(new Element\YesNo("Yes/No:", "YesNo"));
-    $form->addElement(new Element\Captcha("Captcha:"));
-    $form->addElement(new Element\Button);
-    $form->addElement(new Element\Button("Cancel", "button", array(
-            "onclick" => "history.go(-1);"
-    )));*/
     echo $form->render(true);
     //echo htmlentities($form->render(true), ENT_QUOTES);
 
-    
-    //echo "<div><input type='text' value='deneme' ></></div>";
     }
 );
 
@@ -166,7 +134,7 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
                                         'rows'=>$_GET['rows'],
                                         'sort'=>$_GET['sort'],
                                         'order'=>$_GET['order'] ));
-    //print_r($res);
+    //print_r($resDataGrid);
     
     /**
      * BLL fillGridRowTotalCount örneği test edildi
