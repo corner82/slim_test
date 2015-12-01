@@ -44,4 +44,5 @@ return array(
     'PFBC\\Validation\\' => array($vendorDir . '/PFBC/Validation'),
     'PFBC\\View\\' => array($vendorDir . '/PFBC/View'),
     'PFBC\\' => array($vendorDir . '/PFBC'),
+    'Strip\\' => array($vendorDir . '/strip'),
 );
