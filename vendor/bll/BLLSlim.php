@@ -1,10 +1,24 @@
 <?php
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 
 namespace BLL;
 
+/**
+ * abstract business layer class
+ * extended from BLL\AbstractBLL
+ * @author Mustafa Zeynel Dağlı
+ */
 abstract class BLLSlim extends \BLL\AbstractBLL implements 
                                             \Slim\SlimAppInterface, \DAL\DalInterface{
-    
+    /**
+     * constructor
+     */
     public function __construct() {
         
     }

@@ -1,7 +1,17 @@
 <?php
-
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 namespace Services;
 
+/**
+ * interfac for DAL manager layer set and get purposes
+ * @author Mustafa Zeynel Dağlı
+ */
 interface DalManagerInterface {
     /**
      * injects Dal manager instance extended from Zend

@@ -1,7 +1,17 @@
 <?php
-
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 namespace Encrypt;
 
+/**
+ * Encrypt class using php 'mcyrpt' extension
+ * @author Mustafa Zeynel Dağlı
+ */
 class Mcrypt extends \Encrypt\AbstractEncrypt {
     private $_mcrypt_algorithms=array();
     private $_mcrypt_algorithm=MCRYPT_RIJNDAEL_256;
@@ -10,11 +20,22 @@ class Mcrypt extends \Encrypt\AbstractEncrypt {
     private $_mcrypt_mode=MCRYPT_MODE_ECB;
     private $_mcrypt_modes_dir;
     
+    /**
+     * constructor
+     */
     public function __construct()
     {
 
     }
 
+    /**
+     * stativ encrypt function
+     * @param string $value
+     * @param string $key
+     * @param integer $crypt_mode
+     * @param integer $crypt_algorithm
+     * @return boolean
+     */
     public static function static_encrypt($value,$key,$crypt_mode=MCRYPT_MODE_ECB,$crypt_algorithm=MCRYPT_RIJNDAEL_256)
     {
         if(extension_loaded("mcrypt"))

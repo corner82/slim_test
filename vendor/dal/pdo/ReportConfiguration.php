@@ -1,13 +1,20 @@
 <?php
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 
 namespace DAL\PDO;
 
+/**
+ * example DAL layer class for test purposes
+ * @author Mustafa Zeynel Dağlı
+ */
 class ReportConfiguration extends \DAL\DalSlim {
     
-    public function test() {
-        //print_r('--test DAl Object--');
-    }
-
     /**
      * basic delete from database  example for PDO prepared
      * statements, table names are irrevelant and should be changed on specific 
@@ -257,6 +264,13 @@ class ReportConfiguration extends \DAL\DalSlim {
         }
     }
     
+    /**
+     * Datagrid fill function used for testing
+     * user interface datagrid fill operation
+     * @param array | null $args
+     * @return Array
+     * @throws \PDOException
+     */
     public function fillGrid($args = array()) {
         
         if(isset($args['page']) && $args['page']!="" && isset($args['rows']) && $args['rows']!="") {
@@ -338,6 +352,12 @@ class ReportConfiguration extends \DAL\DalSlim {
         }
     }
     
+    /**
+     * user interface datagrid fill operation get row count for widget
+     * @param array | null $params
+     * @return array
+     * @throws \PDOException
+     */
     public function fillGridRowTotalCount($params = array()) {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');

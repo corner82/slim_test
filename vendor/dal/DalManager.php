@@ -1,9 +1,18 @@
 <?php
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 
 namespace DAL;
 
-//use Zend\ServiceManager;
-
+/**
+ * DAL manager extended from Zend\ServiceManager\ServiceManager
+ * @author Mustafa Zeynel Dağlı
+ */
 class DalManager extends \Zend\ServiceManager\ServiceManager {
     
     public function __construct(\Zend\ServiceManager\ConfigInterface $config = null) {

@@ -1,8 +1,28 @@
 <?php
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 
 namespace DAL;
 
+/**
+ * class called for DAL manager config 
+ * DAL manager uses Zend Service manager and 
+ * config class is compliant zend service config structure
+ * @author Mustafa Zeynel Dağlı
+ */
 class DalManagerConfig{
+    
+    /**
+     * constructor
+     */
+    public function __construct() {
+        
+    }
     
     /**
      * config array for zend service manager config
@@ -21,10 +41,6 @@ class DalManagerConfig{
              
          ),
      );
-    
-    public function __construct() {
-        
-    }
     
     /**
      * return config array for zend service manager config

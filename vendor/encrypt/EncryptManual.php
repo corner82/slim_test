@@ -1,25 +1,44 @@
 <?php
-
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 namespace Encrypt;
 
+/**
+ * Encryption class using Encrypt\AbstractEncrypt
+ * @author Mustafa Zeynel Dağlı
+ */
 class EncryptManual extends \Encrypt\AbstractEncrypt {
     protected  $_hash_lenght;
     protected  $_key;
     protected  $_salt='d41d8cd98f00b204e9800998ecf8427e';
+    
+    /**
+     * constructor
+     * @param string $key
+     */
     public function __construct($key="")
     {
         if($key!=="")
         {
             // Instead of using the key directly we compress it using a hash function
-            //echo "<br/>keyyyy===".$key;
             $this->_key = $this->hash_value($key);
             // Remember length of hashvalues for later use
             $this->_hash_lenght = strlen($this->_key);
-            //echo "<br/>hash key==".$this->_key;
-            //echo "<br/>hash length==".$this->_hash_lenght;
         }
     }
 
+    /**
+     * Encrypt any value given counter times
+     * @param integer $counter
+     * @param string | null $value
+     * @param string | null $key
+     * @return string
+     */
     public function encrypt_times($counter=1,$value="",$key="")
     {
         $output;
@@ -31,6 +50,13 @@ class EncryptManual extends \Encrypt\AbstractEncrypt {
         return $value;
     }
 
+    /**
+     * Decrypt any value given counter times
+     * @param integer $counter
+     * @param string | value $value
+     * @param string | null $key
+     * @return string
+     */
     public function decrypt_times($counter=1,$value="",$key="")
     {
         $output;
@@ -42,7 +68,12 @@ class EncryptManual extends \Encrypt\AbstractEncrypt {
         return $value;  
     }
 
-
+    /**
+     * Encrypt any given value
+     * @param string | null $value
+     * @param string | null $key
+     * @return string
+     */
     public function encrypt($value="",$key="")
     {
         $iv = $this->generate_iv();
@@ -75,6 +106,12 @@ class EncryptManual extends \Encrypt\AbstractEncrypt {
         return $out;
     }
 
+    /**
+     * Decrypt any given value
+     * @param string | null $value
+     * @param string | null $key
+     * @return string
+     */
     public function decrypt($value="",$key="")
     {
         // Apply base64 decoding if necessary
