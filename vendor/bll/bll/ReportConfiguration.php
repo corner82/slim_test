@@ -1,16 +1,24 @@
 <?php
+/**
+ * OSTİM TEKNOLOJİ Framework (http://framework.zend.com/)
+ *
+ * @link      https://github.com/corner82/slim_test for the canonical source repository
+ * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
+ * @license   
+ */
 
 namespace BLL\BLL;
 
+/**
+ * Business Layer class for report Configuration entity
+ */
 class ReportConfiguration extends \BLL\BLLSlim{
     
+    /**
+     * constructor
+     */
     public function __construct() {
         //parent::__construct();
-    }
-    
-    public function test() {
-        //$DAL = $this->slimApp->getDALManager()->get('reportConfigurationPDO');
-        //$DAL->test();
     }
     
     public function insert($params = array()) {
