@@ -120,121 +120,63 @@ $app->get("/getDynamicForm_test/", function () use ($app) {
  * @since 11-09-2014
  */
 $app->get("/getReports_test/", function () use ($app, $pdo) {
-    //$pdo->exec('SET NAMES "utf8"');
-    //$res = $pdo->query(  "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'ecoman_18_08' AND TABLE_NAME = 't_flow';"  )->fetchAll(PDO::FETCH_ASSOC);
-    /*if(isset($_GET['flows']) && $_GET['flows']!="" ) {
-        $flows = json_decode($_GET['flows'], true);
-        //print_r($flows);
-        $flowsStr="";
-        foreach ($flows as $key=>$value){
-            $flowsStr.= $value.',';
-        }
-        $flowsStr = rtrim($flowsStr, ',');
-    } */
-    //echo $flowsStr;
-    
-    //$app->getServiceManager()->get('pgConnectFactory');
-    //print_r($app->getServiceManager()->get('pgConnectFactory')); 
-    
-    //print_r($app->container['request']);
-    $requestObj = $app->container['request'];
-    //print_r($requestObj->params());
-    //print_r($requestObj->isXhr());
-    
-    //$app->getDalManager()->get('reportConfigurationPDO');
-    //$this->app->getServiceManager()->get('test');
-    //$app->getServiceManager()->get('pgConnectFactory'); 
+
     $BLL = $app->getBLLManager()->get('reportConfigurationBLL'); 
-    $BLL->test();
+
+    /**
+     * BLL insert örneği test edildi ,
+     * test etmek için yorumu kaldırın
+     * zeynel dağlı
+     */
+    /*$resultArr = $BLL->insert(array('name'=>'zeyn dag new', 
+                       'international_code'=>25, 
+                       'active'=>1));
+    print_r($resultArr);*/
     
-    if(isset($_GET['page']) && $_GET['page']!="" && isset($_GET['rows']) && $_GET['rows']!="") {
-        $offset = ((intval($_GET['page'])-1)* intval($_GET['rows']));
-        $limit = intval($_GET['rows']);
-    } else {
-        $limit = 10;
-        $offset = 0;
-    }
+    /**
+     * BLL update örneği test edildi
+     * test etmek için yorumu kaldırın
+     * zeynel dağlı
+     */
+    /*$resultArr = $BLL->update(3, array('name'=>'zeyn zeyn oldu şimdik'));
+    print_r($resultArr);*/
     
-    $sortArr = array();
-    $orderArr = array();
-    if(isset($_GET['sort']) && $_GET['sort']!="") {
-        $sort = trim($_GET['sort']);
-        $sortArr = explode(",", $sort);
-        //print_r($sortArr);
-        if(count($sortArr)===1)$sort = trim($_GET['sort']);
-    } else {
-        //$sort = "id";
-        $sort = "r_date";
-    }
+    /**
+     * BLL delete örneği test edildi
+     * test etmek için yorumu kaldırın
+     * zeynel dağlı
+     */
+    /*$resultArr = $BLL->delete(2);
+    print_r($resultArr);*/
     
-    if(isset($_GET['order']) && $_GET['order']!="") {
-        $order = trim($_GET['order']);
-        $orderArr = explode(",", $order);
-        //print_r($orderArr);
-        if(count($orderArr)===1)$order = trim($_GET['order']);
-    } else {
-        //$order = "desc";
-        $order = "ASC";
-    }
+    /**
+     * BLL gatAll örneği test edildi
+     * test etmek için yorumu kaldırın
+     * zeynel dağlı
+     */
+    /*$resultArr = $BLL->getAll();
+    print_r($resultArr);*/
     
-    if(count($sortArr)===2 AND count($orderArr)===2) {
-        $sort = $sortArr[0]. " ".$orderArr[0].", ";
-        $order = $sortArr[1]. " ".$orderArr[1];
-    } 
+    /**
+     * BLL fillGrid örneği test edildi
+     * test etmek için yorumu kaldırın
+     * zeynel dağlı
+     */
+    $resDataGrid = $BLL->fillGrid(array('page'=>$_GET['page'],
+                                        'rows'=>$_GET['rows'],
+                                        'sort'=>$_GET['sort'],
+                                        'order'=>$_GET['order'] ));
+    //print_r($res);
     
-    if(isset($_GET['prj_id']) && $_GET['prj_id']!="" && $_GET['prj_id']!=-1) {
-        $projectID = $_GET['prj_id'];
-        $projectStr = '   cm.id IN ( SELECT cmpny_id FROM t_prj_cmpny WHERE prj_id = '.$projectID.'  )';
-    } else {
-        $projectID = '';
-        $projectStr = '';
-    }
-    /*print_r("SELECT 
-                            rp.id as id, 
-                            rp.project_id as project_id, 
-                            rp.user_id as user_id, 
-                            rp.report_jasper_id as report_jasper_id, 
-                            rp.report_type_id as report_type_id, 
-                            rp.r_date as r_date, 
-                            rp.report_name as report_name,
-                            u.user_name as user_name,
-                            u.surname as surname,
-                            u.name as name,
-                            c.name as company_name
-                            FROM r_report_used_configurations rp
-                            INNER JOIN t_user u ON rp.user_id=u.id
-                            INNER JOIN t_cmpny c ON rp.company_id=c.id
-                            ORDER BY  ".$sort." ".$order." LIMIT ".$limit." OFFSET ".$offset." 
-                            ; ");*/
-    $res = $pdo->query("
-                        SELECT 
-                            rp.id as id, 
-                            rp.project_id as project_id, 
-                            rp.user_id as user_id, 
-                            rp.report_jasper_id as report_jasper_id, 
-                            rp.report_type_id as report_type_id, 
-                            rp.r_date as r_date, 
-                            rp.report_name as report_name,
-                            u.user_name as user_name,
-                            u.surname as surname,
-                            u.name as name,
-                            c.name as company_name,
-                            c.id as company_id
-                            FROM r_report_used_configurations rp
-                            INNER JOIN t_user u ON rp.user_id=u.id
-                            INNER JOIN t_cmpny c ON rp.company_id=c.id
-                            ORDER BY  ".$sort." ".$order." LIMIT ".$limit." OFFSET ".$offset." ;
-                          ")->fetchAll(PDO::FETCH_ASSOC);
-                            //ORDER BY  ".$order." ".$sort." LIMIT ".$offset.",".$limit."
-    $res2 = $pdo->query(  "
-                            SELECT 
-                            count(rp.id) as toplam
-                            FROM r_report_used_configurations rp
-                            INNER JOIN t_user u ON rp.user_id=u.id
-                            INNER JOIN t_cmpny c ON rp.company_id=c.id
-                            "  )->fetchAll(PDO::FETCH_ASSOC);
+    /**
+     * BLL fillGridRowTotalCount örneği test edildi
+     * örnek datagrid için total row count döndürüyor
+     * zeynel dağlı
+     */ 
+    $resTotalRowCount = $BLL->fillGridRowTotalCount();
+
     $flows = array();
-    foreach ($res as $flow){
+    foreach ($resDataGrid as $flow){
         $flows[]  = array(
             "id" => $flow["id"],
             "report_name" => $flow["report_name"],
@@ -247,22 +189,18 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
         );
     }
     
-    //{field:'opportunity',title:'Opportunity',width:80},
-    $app->getServiceManager()->get('test'); 
-    
     $app->response()->header("Content-Type", "application/json");
     
     $resultArray = array();
-    $resultArray['total'] = $res2[0]['toplam'];
+    $resultArray['total'] = $resTotalRowCount[0]['toplam'];
     $resultArray['rows'] = $flows;
     
     /*$app->contentType('application/json');
     $app->halt(302, '{"error":"Something went wrong"}');
     $app->stop();*/
     
-    //fopen('zeyn.txt');
-    echo json_encode($resultArray);
-    
+    $app->response()->body(json_encode($resultArray));
+
 });
 
 

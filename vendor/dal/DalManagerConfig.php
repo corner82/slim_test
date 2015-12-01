@@ -18,7 +18,7 @@ class DalManagerConfig{
              'factories' => [
                  'reportConfigurationPDO' => 'DAL\Factory\PDO\ReportConfigurationFactory',
              ],  
-
+             
          ),
      );
     
