@@ -90,7 +90,7 @@ $app->get("/getDynamicForm_test/", function () use ($app) {
 $app->get("/getReports_test/", function () use ($app, $pdo) {
 
     //zend filter service test ediliyor
-    $filterChain = $app->getServiceManager()->get('textBaseFilter');
+    $filterChain = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::TEXT_BASE_FILTER_NOT_TOLOWER_CASE);
     echo $filterChain->filter("deneme   <a  TEST href='test'>");
     echo $filterChain->filter("--TAMAMI BÜYÜK HARF--");
     echo $filterChain->filter("&&& Ahanda javascript === {{{ }}} !-- Karakterler??");
