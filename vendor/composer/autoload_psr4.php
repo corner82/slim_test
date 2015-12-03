@@ -32,6 +32,7 @@ return array(
     'Utill\\BLL\\Test\\' => array($vendorDir . '/utill/bll/test'),
     'Services\\Database\\' => array($vendorDir . '/services/database'),
     'Services\\Database\\Postgresql\\' => array($vendorDir . '/services/database/postgresql'),
+    'Services\\Filter\\' => array($vendorDir . '/services/filter'),
     'Services\\' => array($vendorDir . '/services'),
     'DAL\\' => array($vendorDir . '/dal'),
     'DAL\\PDO\\' => array($vendorDir . '/dal/pdo'),
@@ -45,4 +46,5 @@ return array(
     'PFBC\\View\\' => array($vendorDir . '/PFBC/View'),
     'PFBC\\' => array($vendorDir . '/PFBC'),
     'Strip\\' => array($vendorDir . '/strip'),
+    'Strip\\Strategy\\' => array($vendorDir . '/strip/strategy'),
 );
