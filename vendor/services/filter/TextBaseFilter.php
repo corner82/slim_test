@@ -11,7 +11,7 @@ namespace Services\Filter;
 
 
 /**
- * service manager layer for database connection
+ * service manager layer for filter functions
  * @author Mustafa Zeynel Dağlı
  */
 class TextBaseFilter implements \Zend\ServiceManager\FactoryInterface {
@@ -30,7 +30,8 @@ class TextBaseFilter implements \Zend\ServiceManager\FactoryInterface {
                     ->attach(new \Zend\Filter\StripNewlines())
                     ->attach(new \Zend\Filter\StringToLower(array('encoding' => 'UTF-8')))
                     ->attach(new \Zend\Filter\PregReplace(array(
-                        'pattern'     => array("/javascript/i",
+                        'pattern'     => array('/<!\[cdata\[(.*?)\]\]>/is',// cdata[ filter
+                                               "/javascript/i",
                                                "/([^A-Za-z0-9])*(document)([^A-Za-z0-9])+/i",
                                                "/([^A-Za-z0-9])*(onload)([^A-Za-z0-9])+/i",
                                                "/([^A-Za-z0-9])*(iframe)([^A-Za-z0-9])+/i",

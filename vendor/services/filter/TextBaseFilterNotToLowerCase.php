@@ -11,7 +11,7 @@ namespace Services\Filter;
 
 
 /**
- * service manager layer for database connection
+ * service manager layer for filter functions
  * @author Mustafa Zeynel Dağlı
  */
 class TextBaseFilterNotToLowerCase implements \Zend\ServiceManager\FactoryInterface {

@@ -37,6 +37,11 @@ class config{
                  'textBaseFilter' => 'Services\Filter\TextBaseFilter',
                  'textBaseFilterNotToLowerCase' => 'Services\Filter\TextBaseFilterNotToLowerCase',
                  'textBaseFilterWithSQLReservedWords' => 'Services\Filter\TextBaseFilterWithSQLReservedWords',
+                 'filterSQLReservedWords' => 'Services\Filter\FilterSQLReservedWords',
+                 'filterHTMLTagsAdvanced' => 'Services\Filter\FilterHTMLTagsAdvanced',
+                 'filterHexadecimalBase' => 'Services\Filter\FilterHexadecimalBase',
+                 'filterHexadecimalAdvanced' => 'Services\Filter\FilterHexadecimalAdvanced',
+                 
              ],  
 
          ),

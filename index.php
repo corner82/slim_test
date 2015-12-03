@@ -89,11 +89,21 @@ $app->get("/getDynamicForm_test/", function () use ($app) {
  */
 $app->get("/getReports_test/", function () use ($app, $pdo) {
 
-    //zend filter service test ediliyor
-    $filterChain = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::TEXT_BASE_FILTER_NOT_TOLOWER_CASE);
-    echo $filterChain->filter("deneme   <a  TEST href='test'>");
-    echo $filterChain->filter("--TAMAMI BÜYÜK HARF--");
-    echo $filterChain->filter("&&& Ahanda javascript === {{{ }}} !-- Karakterler??");
+    //zend filter base service test ediliyor
+    //$filterChainBaseText = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::TEXT_BASE_FILTER_NOT_TOLOWER_CASE);
+    //echo $filterChainBaseText->filter("deneme   <a  TEST href='test'>");
+    //echo $filterChainBaseText->filter("--TAMAMI BÜYÜK HARF--");
+    //echo $filterChainBaseText->filter("&&& Ahanda javascript === {{{ }}} !-- Karakterler??");
+
+    // zend filter sql test 
+    //$filterSQLReservedWords = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_SQL_RESERVEDWORDS);
+    //echo $filterSQLReservedWords->filter('test deneme char varchar??cccc');
+
+    // Filters are called from service manager
+    //$filterHtmlAdvanced = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_HTML_TAGS_ADVANCED);
+    //$filterHexadecimalBase = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_HEXADECIMAL_BASE);
+    //$filterHexadecimalAdvanced = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_HEXADECIMAL_ADVANCED);
+    
     
     
     $BLL = $app->getBLLManager()->get('reportConfigurationBLL'); 
