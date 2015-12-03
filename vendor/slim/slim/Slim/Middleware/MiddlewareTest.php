@@ -57,7 +57,14 @@ namespace Slim\Middleware;
         //$env = $this->app->environment();
         //$env['slim.flash'] = $this;
         
-        
+        // Create a filter chain and filter for usage
+        $filterChain = new \Zend\Filter\FilterChain();
+        $filterChain->attach(new \Zend\Filter\StripTags())
+                    ->attach(new \Zend\Filter\StringTrim())
+                    ->attach(new \Zend\Filter\HtmlEntities())
+                    ->attach(new \Zend\Filter\StripNewlines())
+                    ->attach(new \Zend\Filter\StringToLower());
+        echo $filterChain->filter("deneme   <a  TEST href='test'>");
         
         // Create a validator chain and add validators to it
         $validatorChain = new \Zend\Validator\ValidatorChain();
