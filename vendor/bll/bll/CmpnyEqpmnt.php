@@ -9,7 +9,9 @@
  */
 
 namespace BLL\BLL;
-
+/**
+ * Business Layer class for report Configuration entity
+ */
 class CmpnyEqpmnt extends \BLL\BLLSlim{
     
      /**
@@ -18,7 +20,11 @@ class CmpnyEqpmnt extends \BLL\BLLSlim{
     public function __construct() {
         //parent::__construct();
     }
-    
+       /**
+     * Data insert function
+     * @param array | null $params
+     * @return array
+     */ 
   public function insert($params = array()) {
         $DAL = $this->slimApp->getDALManager()->get('cmpnyEqpmntPDO');
         return $DAL->insert($params);
@@ -60,6 +66,7 @@ class CmpnyEqpmnt extends \BLL\BLLSlim{
      * @return array
      */
     public function fillGrid ($params = array()) {
+      //  print_r('123123asdasdasd') ; 
         $DAL = $this->slimApp->getDALManager()->get('cmpnyEqpmntPDO');
         $resultSet = $DAL->fillGrid($params);  
         return $resultSet['resultSet'];
