@@ -61,9 +61,16 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
 
-            $statement = $pdo->prepare("SELECT id, cmpny_id, eqpmnt_id, eqpmnt_type_id, eqpmnt_type_attrbt_id, 
-                            eqpmnt_attrbt_val, eqpmnt_attrbt_unit  FROM t_cmpny_eqpmnt 
-                       ");
+            $statement = $pdo->prepare("SELECT 
+                                            id, 
+                                            cmpny_id, 
+                                            eqpmnt_id, 
+                                            eqpmnt_type_id, 
+                                            eqpmnt_type_attrbt_id,
+                                            eqpmnt_attrbt_val, 
+                                            eqpmnt_attrbt_unit  
+                                        FROM t_cmpny_eqpmnt 
+                                 ");
             $statement->execute();
             $result = $statement->fetcAll(\PDO::FETCH_ASSOC);
             $errorInfo = $statement->errorInfo();
@@ -90,20 +97,20 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
             $pdo->beginTransaction();
 
             $statement = $pdo->prepare("INSERT INTO t_cmpny_eqpmnt(
-                    cmpny_id, 
-                    eqpmnt_id, 
-                    eqpmnt_type_id, 
-                    eqpmnt_type_attrbt_id, 
-                    eqpmnt_attrbt_val, 
-                    eqpmnt_attrbt_unit)
-                    VALUES ( 
-                        :cmpny_id, 
-                        :eqpmnt_id, 
-                        :eqpmnt_type_id, 
-                        :eqpmnt_type_attrbt_id, 
-                        :eqpmnt_attrbt_val, 
-                        :eqpmnt_attrbt_unit )
-                                    ");
+                                cmpny_id, 
+                                eqpmnt_id, 
+                                eqpmnt_type_id, 
+                                eqpmnt_type_attrbt_id, 
+                                eqpmnt_attrbt_val, 
+                                eqpmnt_attrbt_unit)
+                                VALUES ( 
+                                    :cmpny_id, 
+                                    :eqpmnt_id, 
+                                    :eqpmnt_type_id, 
+                                    :eqpmnt_type_attrbt_id, 
+                                    :eqpmnt_attrbt_val, 
+                                    :eqpmnt_attrbt_unit )
+                                                ");
 
             $statement->bindValue(':cmpny_id', $params['cmpny_id'], \PDO::PARAM_INT);
             $statement->bindValue(':eqpmnt_id', $params['eqpmnt_id'], \PDO::PARAM_INT);
@@ -142,14 +149,14 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
             $pdo->beginTransaction();
             $statement = $pdo->prepare("UPDATE t_cmpny_eqpmnt
-                    SET 
-                        cmpny_id = :cmpny_id, 
-                        eqpmnt_id = :eqpmnt_id, 
-                        eqpmnt_type_id = :eqpmnt_type_id, 
-                        eqpmnt_type_attrbt_id = :eqpmnt_type_attrbt_id, 
-                        eqpmnt_attrbt_val = :eqpmnt_attrbt_val, 
-                        eqpmnt_attrbt_unit = :eqpmnt_attrbt_unit 
-                    WHERE id = :id");
+                                SET 
+                                    cmpny_id = :cmpny_id, 
+                                    eqpmnt_id = :eqpmnt_id, 
+                                    eqpmnt_type_id = :eqpmnt_type_id, 
+                                    eqpmnt_type_attrbt_id = :eqpmnt_type_attrbt_id, 
+                                    eqpmnt_attrbt_val = :eqpmnt_attrbt_val, 
+                                    eqpmnt_attrbt_unit = :eqpmnt_attrbt_unit 
+                                WHERE id = :id");
 
             $statement->bindValue(':id', $id, \PDO::PARAM_INT);
             $statement->bindValue(':cmpny_id', $params['cmpny_id'], \PDO::PARAM_INT);
@@ -230,10 +237,10 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
                         u.name as name,
                         c.name as company_name,
                         c.id as company_id
-                        FROM r_report_used_configurations rp
-                        INNER JOIN t_user u ON rp.user_id=u.id
-                        INNER JOIN t_cmpny c ON rp.company_id=c.id
-                        ORDER BY  ".$sort." "
+            FROM r_report_used_configurations rp
+            INNER JOIN t_user u ON rp.user_id=u.id
+            INNER JOIN t_cmpny c ON rp.company_id=c.id
+            ORDER BY    ".$sort." "
                         . "".$order." "  
                         . "LIMIT ".$pdo->quote($limit)." "
                         . "OFFSET ".$pdo->quote($offset)." ";
@@ -259,7 +266,9 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
              $sql = "
-                 SELECT count(id)  as toplam  FROM t_cmpny_eqpmnt
+                 SELECT 
+                    count(id)  as toplam  
+                 FROM t_cmpny_eqpmnt
                     ";
             $statement = $pdo->prepare($sql);
             $statement->execute();
