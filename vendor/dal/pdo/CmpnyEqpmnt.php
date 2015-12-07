@@ -392,13 +392,14 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
              * For debug purposes PDO statement sql
              * uses 'Panique' library located in vendor directory
              */
-            /* $parameters = array(
+             $parameters = array(
               'sort' => $sort,
               'order' => $order,
               'limit' => $pdo->quote($limit),
               'offset' => $pdo->quote($offset),
               );
-              echo debugPDO($sql, $parameters); */
+              echo debugPDO($sql, $parameters);  
+              
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             $errorInfo = $statement->errorInfo();
