@@ -18,11 +18,15 @@ namespace DAL\Factory\PDO;
 class CmpnyEqpmntFactory  implements \Zend\ServiceManager\FactoryInterface{
     
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
-        $cmpnyEqpmnt  = new \DAL\PDO\CmpnyEqpmnt()   ;
-        $slimapp = $serviceLocator->get($slimapp) ; 
+        $cmpnyEqpmnt  = new \DAL\PDO\CmpnyEqpmnt()   ;   
+             //print_r('asqweqweqwewqweeee ') ; 
+        $slimapp = $serviceLocator->get('slimapp') ;            
         $cmpnyEqpmnt -> setSlimApp($slimapp);
-        return $cmpnyEqpmnt;
         
+ 
+        
+        return $cmpnyEqpmnt;
+      
     }
     
     
