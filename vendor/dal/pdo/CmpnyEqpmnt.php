@@ -217,20 +217,26 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
 
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
-            $sql = " SELECT 
-                           id, 
-                           cmpny_id, 
-                           eqpmnt_id, 
-                           eqpmnt_type_id, 
-                           eqpmnt_type_attrbt_id, 
-                           eqpmnt_attrbt_val,
-                           eqpmnt_attrbt_unit
-                     FROM t_cmpny_eqpmnt;
-
-                        ORDER BY  " . $sort . " "
-                    . "" . $order . " "
-                    . "LIMIT " . $pdo->quote($limit) . " "
-                    . "OFFSET " . $pdo->quote($offset) . " ";
+     $sql = "SELECT 
+                        rp.id as id, 
+                        rp.project_id as project_id, 
+                        rp.user_id as user_id, 
+                        rp.report_jasper_id as report_jasper_id, 
+                        rp.report_type_id as report_type_id, 
+                        rp.r_date as r_date, 
+                        rp.report_name as report_name,
+                        u.user_name as user_name,
+                        u.surname as surname,
+                        u.name as name,
+                        c.name as company_name,
+                        c.id as company_id
+                        FROM r_report_used_configurations rp
+                        INNER JOIN t_user u ON rp.user_id=u.id
+                        INNER JOIN t_cmpny c ON rp.company_id=c.id
+                        ORDER BY  ".$sort." "
+                        . "".$order." "  
+                        . "LIMIT ".$pdo->quote($limit)." "
+                        . "OFFSET ".$pdo->quote($offset)." ";
             $statement = $pdo->prepare($sql);
 
 
@@ -253,7 +259,7 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
              $sql = "
-                 SELECT count(id) FROM t_cmpny_eqpmnt
+                 SELECT count(id)  as toplam  FROM t_cmpny_eqpmnt
                     ";
             $statement = $pdo->prepare($sql);
             $statement->execute();
