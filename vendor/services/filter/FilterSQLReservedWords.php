@@ -61,7 +61,8 @@ class FilterSQLReservedWords implements \Zend\ServiceManager\FactoryInterface {
                                             "/fetch/","/FETCH/","/insert/","/INSERT/",
                                             "/(\s)+(kill)(\s)+/","/(\s)+(KILL)(\s)+/",
                                             "/(\s)+(open)(\s)+/","/(\s)+(OPEN)(\s)+/",
-                                            "/select/","/SELECT/",
+                                            "/select/",
+                                            "/SELECT/",
                                             "/sysobjects/",
                                             "/SYSOBJECTS/",
                                             "/syscolumns/",
@@ -75,7 +76,7 @@ class FilterSQLReservedWords implements \Zend\ServiceManager\FactoryInterface {
                                             "/([^A-Za-z0-9])(OR)([^A-Za-z0-9])+/",
                                             "/([^A-Za-z0-9])(UNION)([^A-Za-z0-9])+/",
                                             "/([^A-Za-z0-9])(union)([^A-Za-z0-9])+/"),
-                        'replacement' => '',
+                        'replacement' => '/*$0*/',
                     )));
         return $filterChain;
 
