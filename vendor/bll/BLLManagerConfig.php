@@ -32,7 +32,8 @@ class BLLManagerConfig{
          'service_manager' => array(
              'invokables' => array(
                  //'test' => 'Utill\BLL\Test\Test'
-                 'reportConfigurationBLL' => 'BLL\BLL\ReportConfiguration'
+                 'reportConfigurationBLL' => 'BLL\BLL\ReportConfiguration',
+                 'cmpnyEqpmntBLL' => 'BLL\BLL\CmpnyEqpmnt'
              ),
              'factories' => [
                  //'reportConfigurationPDO' => 'BLL\BLL\ReportConfiguration',
