@@ -17,7 +17,8 @@ protected $connection;
  * rabbitMQ connection server
  * @var string 
  */
-protected $server = 'localhost';
+//protected $server = 'localhost';
+protected $server = '10.18.2.179';
 
 /**
  * rabbitMQ connection port
@@ -29,13 +30,15 @@ protected $port = 5672;
  * rabbitMQ user
  * @var string
  */
-protected $user = 'guest';
+//protected $user = 'guest';
+protected $user = 'test';
 
 /**
  * rabbitMQ connection password
  * @var string
  */
-protected $password = 'guest';
+//protected $password = 'guest';
+protected $password = 'test';
 
 /**
  * rabbitMQ queue name
