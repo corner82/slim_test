@@ -37,6 +37,9 @@ class DalManagerConfig{
              ),
              'factories' => [
                  'reportConfigurationPDO' => 'DAL\Factory\PDO\ReportConfigurationFactory',
+                 'cmpnyEqpmntPDO' => 'DAL\Factory\PDO\CmpnyEqpmntFactory',
+                 
+                 
              ],  
              
          ),
