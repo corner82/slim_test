@@ -22,10 +22,8 @@ class CmpnyEqpmntFactory  implements \Zend\ServiceManager\FactoryInterface{
              //print_r('asqweqweqwewqweeee ') ; 
         $slimapp = $serviceLocator->get('slimapp') ;            
         $cmpnyEqpmnt -> setSlimApp($slimapp);
-        
- 
-        
-        return $cmpnyEqpmnt;
+
+return $cmpnyEqpmnt;
       
     }
     

@@ -54,3 +54,4 @@ vendor/dal/pdo/SysSectors.php
 index_okan.php
 vendor/dal/pdo/SysSectors.php
 vendor/dal/dalFactory/pdo/SysSectorsFactory.php
+vendor/services/database/postgresql/PostgreSQLConnectPDO_Ostim.php

@@ -447,3 +447,4 @@ class CmpnyEqpmnt extends \DAL\DalSlim {
     }
 
 }
+ 
