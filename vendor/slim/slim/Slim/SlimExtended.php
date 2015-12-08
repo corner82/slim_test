@@ -8,7 +8,8 @@ use Slim\Slim;
 
 class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
                                             \DAL\DalManagerInterface,
-                                            \BLL\BLLManagerInterface{
+                                            \BLL\BLLManagerInterface,
+                                            \Utill\MQ\MQManagerInterface{
     
     /**
      * exceptions and rabbitMQ configuration parameters
@@ -62,19 +63,45 @@ class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
     protected $serviceManager;
     
     /**
-     * DAl service manager instance extended from zend service manager in Slimm Application
+     * DAL service manager instance extended from zend service manager in Slimm Application
      * @var DAL\DalManager
      */
     protected $dalManager;
     
     /**
-     * DAl service manager instance extended from zend service manager in Slimm Application
+     * BLL service manager instance extended from zend service manager in Slimm Application
      * @var BLL\BLLManager
      */
     protected $BLLManager;
+    
+    /**
+     * MQ service manager instance extended from zend service manager in Slimm Application
+     * @var Utill\MQ\MQManager
+     */
+    protected $mqManager;
 
     public function __construct(array $userSettings = array()) {
         parent::__construct($userSettings);
+    }
+    
+    /**
+     * gets MQ manager instance extended from 
+     * Zend service manager instance from Slimm Application
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function getMQManager() {
+        return $this->mqManager;
+    }
+
+    /**
+     * gets MQ manager instance extended from 
+     * Zend service manager instance from Slimm Application
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceManager
+     * @author Mustafa Zeynel Dağlı
+     */
+    public function setMQManager(\Zend\ServiceManager\ServiceLocatorInterface $serviceManager) {
+        $this->mqManager = $serviceManager;
     }
     
     /**
@@ -218,12 +245,24 @@ class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
         date_default_timezone_set($this->container['settings']['time.zone']);
         
         /**
-         * if rest service entry logging conf. true, publish to message queue
-         * @author Mustafa Zeynel Dağlı
+         * MQMAnager middle ware katmanından önce inject
+         * ediliyor/ test amaçlı değiştirilecek
          */
-        if($this->container['settings']['restEntry.rabbitMQ'] == true) $this->publishMessage();
+        $MQManagerConfigObject = new \Utill\MQ\MQManagerConfig;
+        $managerConfig = new \Zend\ServiceManager\Config($MQManagerConfigObject->getConfig());
+        $MQManager = new \Utill\MQ\MQManager($managerConfig);
+        $MQManager->setService('slimApp', $this);
+        $this->setMQManager($MQManager);
+        
         
         set_error_handler(array('\Slim\Slim', 'handleErrors'));
+        /**
+         * MQmanager exceptions has been tested  by changing error handler function
+         * @author Zeynel Dağlı
+         * @todo first tests did not work, after further tests if not work
+         * this code can be removed
+         */
+        //set_error_handler(array($this, 'handleErrorsCustom'));
 
         //Apply final outer middleware layers
         if ($this->config('debug')  ) {
@@ -242,6 +281,14 @@ class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
         //Invoke middleware and application stack
         $this->middleware[0]->call();
         //print_r('--slim run kontrolor2--');
+        
+        /**
+         * if rest service entry logging conf. true, publish to message queue
+         * @since 07/12/2015 this functionality is being called from MQ manager
+         * @author Mustafa Zeynel Dağlı
+         */
+        //if($this->container['settings']['restEntry.rabbitMQ'] == true) $this->publishMessage();
+        if($this->container['settings']['restEntry.rabbitMQ'] == true) $this->getMQManager()->get('MQRestCallLog');
 
         //Fetch status, header, and body
         list($status, $headers, $body) = $this->response->finalize();
@@ -281,6 +328,7 @@ class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
      * message wrapper function
      * @param \Exception $e
      * @author Mustafa Zeynel Dağlı
+     * @deprecated since version 1.0.1 rest call log has been removed to MQManager
      */
     public function publishMessage($e = null, array $params = array()) {
         $exceptionMQ = new \Utill\MQ\restEntryMQ();
@@ -398,8 +446,47 @@ class SlimExtended extends Slim implements  \Utill\MQ\ImessagePublisher,
     public function setSecurityContent($securityContent) {
          $this->privateHash = $securityContent;
     }
-
     
+    
+    /**
+     * Convert errors into ErrorException objects
+     *
+     * This method will be trialed to reach error exception objects
+     * from MQ manager
+     *
+     * @param  int            $errno   The numeric type of the Error
+     * @param  string         $errstr  The error message
+     * @param  string         $errfile The absolute path to the affected file
+     * @param  int            $errline The line number of the error in the affected file
+     * @return bool
+     * @throws \ErrorException
+     * @todo First test with MQmanager did not work, for further test this functionis not removed
+     * after further test if not work to to publis exceptions to message queue, this function should be
+     * removed
+     */
+    public  function handleErrorsCustom($errno, $errstr = '', $errfile = '', $errline = '', $errcontext = '')
+    {
+        if (!($errno & error_reporting())) {
+            return;
+        }
+        /**
+         * Exception loglarını Message queue ve 
+         * service manager üzerinden yönetmek için yazılmıştır.
+         * @author Mustafa Zeynel Dağlı
+         */
+        $exceptionMQ = $this->getMQManager()->get('MQException');
+        $exceptionMQ->getMessage()->setMessageBody(array('message' => $errstr, 
+                                       'file' => $errfile,
+                                       'line' => $errline,
+                                       'trace' => $errcontext ,
+                                       'time'  => date('l jS \of F Y h:i:s A'),
+                                       'serial' => $this->container['settings']['request.serial'],
+                                       'logFormat' => $this->container['settings']['exceptions.rabbitMQ.logging']));
+        $exceptionMQ->basicPublish();
+        //print_r('--handlecustomerror--');
+        throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+    }
+
 
 }
 

@@ -34,6 +34,7 @@ $res->header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS");
 $app->add(new \Slim\Middleware\MiddlewareBLLManager());
 $app->add(new \Slim\Middleware\MiddlewareDalManager());
 $app->add(new \Slim\Middleware\MiddlewareServiceManager());
+$app->add(new \Slim\Middleware\MiddlewareMQManager());
 $app->add(new \Slim\Middleware\MiddlewareHMAC());
 
 
@@ -96,8 +97,8 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     //echo $filterChainBaseText->filter("&&& Ahanda javascript === {{{ }}} !-- Karakterler??");
 
     // zend filter sql test 
-    $filterSQLReservedWords = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_SQL_RESERVEDWORDS);
-    echo $filterSQLReservedWords->filter('select drop deneme char varchar??cccc');
+    /*$filterSQLReservedWords = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_SQL_RESERVEDWORDS);
+    echo $filterSQLReservedWords->filter('select drop deneme char varchar??cccc');*/
 
     // Filters are called from service manager
     //$filterHtmlAdvanced = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_HTML_TAGS_ADVANCED);

@@ -108,7 +108,15 @@ public function getMessage() {
  */
 public function setConnection(\PhpAmqpLib\Connection $connection = null) {
     if($connection==null) {
-        $this->connection = new \PhpAmqpLib\Connection\AMQPConnection($this->server, $this->port, $this->user, $this->password);
+        try {
+            $this->connection = new \PhpAmqpLib\Connection\AMQPConnection($this->server, 
+                                                                          $this->port, 
+                                                                          $this->user, 
+                                                                          $this->password);
+        }catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+        
     } else {
         $this->connection = $connection;
     }

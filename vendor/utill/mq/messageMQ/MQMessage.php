@@ -56,7 +56,7 @@ public function setMessage() {
               'content_type' => 'application/json') 
         );
     */
-    $this->message = new \PhpAmqpLib\Message\AMQPMessage(  
+        $this->message = new \PhpAmqpLib\Message\AMQPMessage(  
         $this->messageBody,
         $this->messageProperties
     );
