@@ -68,6 +68,10 @@ class PrettyExceptions extends \Slim\Middleware implements \Utill\MQ\ImessagePub
             $this->next->call();
         } catch (\Exception $e) {
             //print_r('--pretty exceptions call()--');
+            //
+            // publis exception on message queue
+            $this->publishMessage($e);
+            
             $log = $this->app->getLog(); // Force Slim to append log to env if not already
             $env = $this->app->environment();
             $env['slim.log'] = $log;
@@ -77,8 +81,7 @@ class PrettyExceptions extends \Slim\Middleware implements \Utill\MQ\ImessagePub
             $this->app->response()->body($this->renderBody($env, $e));
             //print_r(json_encode(serialize($e)));
             
-            // publis exception on message queue
-            $this->publishMessage($e);
+            
         }
     }
     
@@ -95,8 +98,6 @@ class PrettyExceptions extends \Slim\Middleware implements \Utill\MQ\ImessagePub
         $exceptionMQ->setChannelProperties(array('queue.name' => $this->app->container['settings']['exceptions.rabbitMQ.queue.name']));
         $message = new \Utill\MQ\MessageMQ\MQMessage();
         ;
-        //$message->setMessageBody(array('testmessage body' => 'test cevap'));
-        //$message->setMessageBody($e);
         $message->setMessageBody(array('message' => $e->getMessage(), 
                                        'file' => $e->getFile(),
                                        'line' => $e->getLine(),
@@ -104,10 +105,32 @@ class PrettyExceptions extends \Slim\Middleware implements \Utill\MQ\ImessagePub
                                        'time'  => date('l jS \of F Y h:i:s A'),
                                        'serial' => $this->app->container['settings']['request.serial'],
                                        'logFormat' => $this->app->container['settings']['exceptions.rabbitMQ.logging']));
+        //print_r($message->getMesssageBody());
         $message->setMessageProperties(array('delivery_mode' => 2,
                                              'content_type' => 'application/json'));
         $exceptionMQ->setMessage($message->setMessage());
         $exceptionMQ->basicPublish();
+        
+        /**
+         * Exception loglarını Message queue ve 
+         * service manager üzerinden yönetmek için yazılmıştır.
+         * @author Mustafa Zeynel Dağlı
+         */
+        /*$exceptionMQ = $this->app->getMQManager()->get('MQException');
+        $exceptionMQ->setChannelProperties(array('queue.name' => $this->container['settings']['restEntry.rabbitMQ.queue.name']));
+        $message = new \Utill\MQ\MessageMQ\MQMessage();
+        $message->setMessageBody(array('message' => $e->getMessage(), 
+                                       'file' => $e->getFile(),
+                                       'line' => $e->getLine(),
+                                       'trace' => $e->getTraceAsString() ,
+                                       'time'  => date('l jS \of F Y h:i:s A'),
+                                       'serial' => $this->app->container['settings']['request.serial'],
+                                       'logFormat' => $this->app->container['settings']['exceptions.rabbitMQ.logging']));
+        $message->setMessageProperties(array('delivery_mode' => 2,
+                                             'content_type' => 'application/json'));
+        $exceptionMQ->setMessage($message->setMessage());
+        $exceptionMQ->basicPublish();*/
+        
     }
 
     /**
