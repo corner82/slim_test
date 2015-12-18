@@ -85,7 +85,7 @@ $app->get("/getDynamicForm_test/", function () use ($app) {
 
 
 /**
- *  * zeynel daÄŸlÄ±
+ * zeynel dağlı
  * @since 11-09-2014
  */
 $app->get("/getReports_test/", function () use ($app, $pdo) {
