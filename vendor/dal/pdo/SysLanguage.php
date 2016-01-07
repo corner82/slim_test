@@ -1,5 +1,4 @@
 <?php
-
 /**
  * OSTİM TEKNOLOJİ Framework 
  *
@@ -10,13 +9,14 @@
 
 namespace DAL\PDO;
 
+
 /**
  * Class using Zend\ServiceManager\FactoryInterface
  * created to be used by DAL MAnager
  * @
- * @author Okan CIRAN
+ * @author Okan CİRANĞ
  */
-class SysSectors extends \DAL\DalSlim {
+class SysLanguage extends \DAL\DalSlim {
 
     /**
      * basic delete from database  example for PDO prepared
@@ -43,7 +43,7 @@ class SysSectors extends \DAL\DalSlim {
       )
      * usage
      * @author Okan CIRAN
-     * @ sys_sectors tablosundan parametre olarak  gelen id kaydını siler. !!
+     * @ sys_language tablosundan parametre olarak  gelen id kaydını siler. !!
      * @version v 1.0  07.12.2015
      * @param type $id
      * @return array
@@ -58,7 +58,7 @@ class SysSectors extends \DAL\DalSlim {
              */
             //Prepare our UPDATE SQL statement. 
             $statement = $pdo->prepare(" 
-                UPDATE sys_sectors
+                UPDATE sys_language
                 SET  deleted= 1
                 WHERE id = :id");
             //Bind our value to the parameter :id.
@@ -132,7 +132,7 @@ class SysSectors extends \DAL\DalSlim {
       )
      * usage 
      * @author Okan CIRAN
-     * @ sys_sectors tablosundaki tüm kayıtları getirir.  !!
+     * @ sys_language tablosundaki tüm kayıtları getirir.  !!
      * @version v 1.0  07.12.2015    
      * @return array
      * @throws \PDOException
@@ -144,28 +144,37 @@ class SysSectors extends \DAL\DalSlim {
              * table names and column names will be changed for specific use
              */
             $statement = $pdo->prepare("
-            SELECT 
+                  SELECT                    
                     a.id, 
-                    COALESCE(NULLIF(a.name, ''), a.name_eng) AS name, 
-                    a.name_eng, 
+                    a.country_name, 
+                    a.country_name_eng, 
+                    a.country_id, 		
+                    a.language_parent_id,		
                     a.deleted, 
 		    sd.description as state_deleted,                 
                     a.active, 
-		    sd1.description as state_active,                      
-                    a.language_code, 
-		    COALESCE(NULLIF(l.language_eng, ''), l.language) AS language_name,
-                    a.ordr as siralama,
-                    a.language_parent_id,
-                    a.description,
-                    a.description_eng,                   
-                    a.user_id,
-                    u.username    
-                FROM sys_sectors  a
-                INNER JOIN sys_specific_definitions sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND sd.language_code = a.language_code AND sd.deleted = 0 AND sd.active = 0
-                INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND sd1.language_code = a.language_code AND sd1.deleted = 0 AND sd1.active = 0                
-                INNER JOIN sys_language l ON l.language_main_code = a.language_code AND l.deleted =0 AND l.active = 0 
-		INNER JOIN info_users u ON u.id = a.user_id 
-                ORDER BY a.name
+		    sd1.description as state_active, 		
+                    a.icon_road, 		
+                    a.user_id, 
+                    u.username,
+                    a.country_code3, 		
+                    a.link, 		
+                    a.language_code, 		
+                    a.language_id, 
+		    COALESCE(NULLIF(l.language_eng, ''), l.language) AS language_name,  		
+                    a.parent_id, 		                    
+                    COALESCE(NULLIF(a.language, ''), a.language_eng) AS language, 
+                    a.language_eng,
+                    a.language_main_code,
+                    a.priority                    
+                FROM sys_language  a
+                INNER JOIN sys_specific_definitions sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND 
+			sd.language_id = a.language_id  AND sd.active =0 AND sd.deleted=0
+		INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND 
+			sd1.language_id = a.language_id AND sd1.deleted = 0 AND sd1.active = 0
+                INNER JOIN sys_language l ON l.id = a.language_id AND l.deleted =0 AND l.active = 0 
+		INNER JOIN info_users u ON u.id = a.user_id  
+                ORDER BY a.priority, language 
                 
                                  ");
             $statement->execute();
@@ -208,7 +217,7 @@ class SysSectors extends \DAL\DalSlim {
       )
      * usage     
      * @author Okan CIRAN
-     * @ sys_sectors tablosuna yeni bir kayıt oluşturur.  !!
+     * @ sys_language tablosuna yeni bir kayıt oluşturur.  !!
      * @version v 1.0  08.12.2015
      * @return array
      * @throws \PDOException
@@ -221,28 +230,49 @@ class SysSectors extends \DAL\DalSlim {
              * table names and column names will be changed for specific use
              */
             $statement = $pdo->prepare("
-                INSERT INTO sys_sectors(
-                        name, name_eng, language_code, ordr ,description,description_eng,user_id    )
+                INSERT INTO sys_language(
+                        country_name, country_name_eng, country_id, language_parent_id, 
+                        icon_road, user_id, country_code3, link, language_code, 
+                        language_id, parent_id, language_eng, language_main_code, language, 
+                        priority)  
                 VALUES (
-                        :name,
-                        :name_eng, 
-                        :language_code,
-                        :ordr,
-                        :description,
-                        :description_eng,                       
-                        :user_id  
+                        :country_name, 
+                        :country_name_eng, 
+                        :country_id, 
+                        :language_parent_id, 
+                        :icon_road, 
+                        :user_id, 
+                        :country_code3, 
+                        :link, 
+                        :language_code, 
+                        :language_id, 
+                        :parent_id, 
+                        :language_eng, 
+                        :language_main_code, 
+                        :language, 
+                        :priority
                                                 ");
-            $statement->bindValue(':name', $params['name'], \PDO::PARAM_STR);
-            $statement->bindValue(':name_eng', $params['name_eng'], \PDO::PARAM_STR);
-            $statement->bindValue(':language_code', $params['language_code'], \PDO::PARAM_STR);
-            $statement->bindValue(':ordr', $params['ordr'], \PDO::PARAM_INT);
-            $statement->bindValue(':description', $params['description'], \PDO::PARAM_STR);
-            $statement->bindValue(':description_eng', $params['description_eng'], \PDO::PARAM_STR);
-            $statement->bindValue(':user_id', $params['user_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':country_name', $params['country_name'], \PDO::PARAM_STR);
+            $statement->bindValue(':country_name_eng', $params['country_name_eng'], \PDO::PARAM_STR);
+            $statement->bindValue(':country_id', $params['country_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':language_parent_id', $params['language_parent_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':icon_road', $params['icon_road'], \PDO::PARAM_STR);
+            $statement->bindValue(':user_id', $params['user_id'], \PDO::PARAM_STR);
+            $statement->bindValue(':country_code3', $params['country_code3'], \PDO::PARAM_STR);
+            $statement->bindValue(':link', $params['link'], \PDO::PARAM_STR);
+            
+            $statement->bindValue(':language_code', $params['language_code'], \PDO::PARAM_INT);
+            $statement->bindValue(':language_id', $params['language_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':parent_id', $params['parent_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':language_eng', $params['language_eng'], \PDO::PARAM_STR);
+            $statement->bindValue(':language_main_code', $params['language_main_code'], \PDO::PARAM_STR);
+            $statement->bindValue(':language', $params['language'], \PDO::PARAM_STR);
+            $statement->bindValue(':priority', $params['priority'], \PDO::PARAM_INT);
+                        
 
             $result = $statement->execute();
 
-            $insertID = $pdo->lastInsertId('sys_sectors_id_seq');
+            $insertID = $pdo->lastInsertId('sys_language_id_seq');
 
             $errorInfo = $statement->errorInfo();
             if ($errorInfo[0] != "00000" && $errorInfo[1] != NULL && $errorInfo[2] != NULL)
@@ -281,7 +311,7 @@ class SysSectors extends \DAL\DalSlim {
       )
      * usage  
      * @author Okan CIRAN
-     * sys_sectors tablosuna parametre olarak gelen id deki kaydın bilgilerini günceller   !!
+     * sys_language tablosuna parametre olarak gelen id deki kaydın bilgilerini günceller   !!
      * @version v 1.0  07.12.2015
      * @param type $id
      * @return array
@@ -297,28 +327,47 @@ class SysSectors extends \DAL\DalSlim {
              */
             //Prepare our UPDATE SQL statement.            
             $statement = $pdo->prepare("
-                UPDATE sys_sectors
+                UPDATE sys_language
                 SET              
-                    name = :name, 
-                    name_eng = :name_eng, 
-                    language_code = :language_code, 
-                    ordr = :ordr,
-                    description=  :description,
-                    description_eng=   :description_eng,                       
-                    user_id= :user_id  
+                    country_name = :country_name, 
+                    country_name_eng = :country_name_eng, 
+                    country_id  = :country_id, 
+                    language_parent_id  = :language_parent_id, 
+                    icon_road  = :icon_road, 
+                    user_id  = :user_id, 
+                    country_code3  = :country_code3, 
+                    link  = :link, 
+                    language_code  = :language_code, 
+                    language_id  = :language_id, 
+                    parent_id  = :parent_id, 
+                    language_eng  = :language_eng, 
+                    language_main_code  = :language_main_code, 
+                    language  = :language, 
+                    priority  = :priority
                 WHERE id = :id");
             //Bind our value to the parameter :id.
             $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-            //Bind our :model parameter.
-            $statement->bindValue(':name', $params['name'], \PDO::PARAM_STR);
-            $statement->bindValue(':name_eng', $params['name_eng'], \PDO::PARAM_STR);
-            $statement->bindValue(':language_code', $params['language_code'], \PDO::PARAM_STR);
-            $statement->bindValue(':ordr', $params['ordr'], \PDO::PARAM_INT);                       
-            $statement->bindValue(':description', $params['description'], \PDO::PARAM_STR);
-            $statement->bindValue(':description_eng', $params['description_eng'], \PDO::PARAM_STR);
-            $statement->bindValue(':user_id', $params['user_id'], \PDO::PARAM_INT);
+            //Bind our :model parameter.     
+            $statement->bindValue(':country_name', $params['country_name'], \PDO::PARAM_STR);
+            $statement->bindValue(':country_name_eng', $params['country_name_eng'], \PDO::PARAM_STR);
+            $statement->bindValue(':country_id', $params['country_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':language_parent_id', $params['language_parent_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':icon_road', $params['icon_road'], \PDO::PARAM_STR);
+            $statement->bindValue(':user_id', $params['user_id'], \PDO::PARAM_STR);
+            $statement->bindValue(':country_code3', $params['country_code3'], \PDO::PARAM_STR);
+            $statement->bindValue(':link', $params['link'], \PDO::PARAM_STR);
+            
+            $statement->bindValue(':language_code', $params['language_code'], \PDO::PARAM_INT);
+            $statement->bindValue(':language_id', $params['language_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':parent_id', $params['parent_id'], \PDO::PARAM_INT);
+            $statement->bindValue(':language_eng', $params['language_eng'], \PDO::PARAM_STR);
+            $statement->bindValue(':language_main_code', $params['language_main_code'], \PDO::PARAM_STR);
+            $statement->bindValue(':language', $params['language'], \PDO::PARAM_STR);
+            $statement->bindValue(':priority', $params['priority'], \PDO::PARAM_INT);
+            
+            
             //Execute our UPDATE statement.
-            $update = $statement->execute();
+            $update = $statement->execute(); 
             $affectedRows = $statement->rowCount();
             $errorInfo = $statement->errorInfo();
             if ($errorInfo[0] != "00000" && $errorInfo[1] != NULL && $errorInfo[2] != NULL)
@@ -335,7 +384,7 @@ class SysSectors extends \DAL\DalSlim {
      * Datagrid fill function used for testing
      * user interface datagrid fill operation   
      * @author Okan CIRAN
-     * @ Gridi doldurmak için sys_sectors tablosundan kayıtları döndürür !!
+     * @ Gridi doldurmak için sys_language tablosundan kayıtları döndürür !!
      * @version v 1.0  08.12.2015
      * @param array | null $args
      * @return array
@@ -371,34 +420,43 @@ class SysSectors extends \DAL\DalSlim {
         } else {
             //$order = "desc";
             $order = "ASC";
-        }
+        }        
 
 
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
-            $sql = "
-                SELECT 
+            $sql = " 
+                 SELECT                    
                     a.id, 
-                    COALESCE(NULLIF(a.name, ''), a.name_eng) AS name, 
-                    a.name_eng, 
+                    a.country_name, 
+                    a.country_name_eng, 
+                    a.country_id, 		
+                    a.language_parent_id,		
                     a.deleted, 
 		    sd.description as state_deleted,                 
                     a.active, 
-		    sd1.description as state_active,                      
-                    a.language_code, 
-		    COALESCE(NULLIF(l.language_eng, ''), l.language) AS language_name,
-                    a.ordr as siralama,
-                    a.language_parent_id,
-                    a.description,
-                    a.description_eng,                  
-                    a.user_id,
-                    u.username    
-                FROM sys_sectors  a
-                INNER JOIN sys_specific_definitions sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND sd.language_code = a.language_code AND sd.deleted = 0 AND sd.active = 0
-                INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND sd1.language_code = a.language_code AND sd1.deleted = 0 AND sd1.active = 0                
-                INNER JOIN sys_language l ON l.language_main_code = a.language_code AND l.deleted =0 AND l.active = 0 
-		INNER JOIN info_users u ON u.id = a.user_id 
-                WHERE a.language_code = :language_code
+		    sd1.description as state_active, 		
+                    a.icon_road, 		
+                    a.user_id, 
+                    u.username,
+                    a.country_code3, 		
+                    a.link, 		
+                    a.language_code, 		
+                    a.language_id, 
+		    COALESCE(NULLIF(l.language_eng, ''), l.language) AS language_name,  		
+                    a.parent_id, 		                    
+                    COALESCE(NULLIF(a.language, ''), a.language_eng) AS language, 
+                    a.language_eng,
+                    a.language_main_code,
+                    a.priority
+                FROM sys_language  a
+                INNER JOIN sys_specific_definitions sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND 
+			sd.language_id = a.language_id  AND sd.active =0 AND sd.deleted=0
+		INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND 
+			sd1.language_id = a.language_id AND sd1.deleted = 0 AND sd1.active = 0
+                INNER JOIN sys_language l ON l.id = a.language_id AND l.deleted =0 AND l.active = 0 
+		INNER JOIN info_users u ON u.id = a.user_id  
+                WHERE a.language_id = :language_id                                               
                 ORDER BY    " . $sort . " "
                     . "" . $order . " "
                     . "LIMIT " . $pdo->quote($limit) . " "
@@ -414,8 +472,8 @@ class SysSectors extends \DAL\DalSlim {
                 'limit' => $pdo->quote($limit),
                 'offset' => $pdo->quote($offset),
             );
-          //  echo debugPDO($sql, $parameters);
-            $statement->bindValue(':language_code', $args['language_code'], \PDO::PARAM_INT);  
+           // echo debugPDO($sql, $parameters);
+            $statement->bindValue(':language_id', $args['language_id'], \PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             $errorInfo = $statement->errorInfo();
@@ -432,7 +490,7 @@ class SysSectors extends \DAL\DalSlim {
     /**
      * user interface datagrid fill operation get row count for widget
      * @author Okan CIRAN
-     * @ Gridi doldurmak için sys_sectors tablosundan çekilen kayıtlarının kaç tane olduğunu döndürür   !!
+     * @ Gridi doldurmak için sys_language tablosundan çekilen kayıtlarının kaç tane olduğunu döndürür   !!
      * @version v 1.0  08.12.2015
      * @param array | null $args
      * @return array
@@ -443,30 +501,36 @@ class SysSectors extends \DAL\DalSlim {
 
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
             $sql = "
-                SELECT 
-			COUNT(a.id) AS COUNT ,    
-			( SELECT COUNT(a1.id) FROM sys_sectors a1
-			INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 15 AND sd1.first_group= a1.deleted AND sd1.language_code = a1.language_code AND sd1.deleted = 0 AND sd1.active = 0
-			INNER JOIN sys_specific_definitions sd11 ON sd11.main_group = 16 AND sd11.first_group= a1.active AND sd11.language_code = a1.language_code AND sd11.deleted = 0 AND sd11.active = 0                
-			INNER JOIN sys_language l1 ON l1.id = a1.language_code AND l1.deleted =0 AND l1.active = 0 
-			INNER JOIN info_users u1 ON u1.language_main_code = a1.user_id  
-			WHERE a1.language_code = :language_code AND a1.deleted =0) AS undeleted_count, 
-			 
-			(SELECT COUNT(a2.id) FROM sys_sectors a2			
-			INNER JOIN sys_specific_definitions sd2 ON sd2.main_group = 15 AND sd2.first_group= a2.deleted AND sd2.language_code = a2.language_code AND sd2.deleted = 0 AND sd2.active = 0
-			INNER JOIN sys_specific_definitions sd12 ON sd12.main_group = 16 AND sd12.first_group= a2.active AND sd12.language_code = a2.language_code AND sd12.deleted = 0 AND sd12.active = 0                
-			INNER JOIN sys_language l2 ON l2.language_main_code = a2.language_code AND l2.deleted =0 AND l2.active = 0 
-			INNER JOIN info_users u2 ON u2.id = a2.user_id  
-			WHERE a2.language_code = :language_code AND a2.deleted =1) AS deleted_count 			
-                FROM sys_sectors  a
-                INNER JOIN sys_specific_definitions sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND sd.language_code = a.language_code AND sd.deleted = 0 AND sd.active = 0
-                INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND sd1.language_code = a.language_code AND sd1.deleted = 0 AND sd1.active = 0                
-                INNER JOIN sys_language l ON l.language_main_code = a.language_code AND l.deleted =0 AND l.active = 0 
+             
+	     SELECT                    
+			COUNT(a.id) AS COUNT , 
+			(SELECT COUNT(a1.id) FROM sys_language a1
+			INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 15 AND sd1.first_group= a1.deleted AND 
+				sd1.language_id = a1.language_id AND sd1.active =0 AND sd1.deleted = 0
+			INNER JOIN sys_specific_definitions sd12 ON sd12.main_group = 16 AND sd12.first_group = a1.active AND 
+				sd12.language_id = a1.language_id AND sd12.deleted = 0 AND sd12.active = 0
+			INNER JOIN sys_language l1 ON l1.id = a1.language_id AND l1.deleted = 0 AND l1.active = 0 
+			INNER JOIN info_users u1 ON u1.id = a1.user_id               
+			WHERE a1.language_id = :language_id AND a1.deleted =0) AS undeleted_count, 
+		       (SELECT COUNT(a2.id) FROM sys_language a2
+			INNER JOIN sys_specific_definitions sd2 ON sd2.main_group = 15 AND sd2.first_group = a2.deleted AND 
+				sd2.language_id = a2.language_id AND sd2.active =0 AND sd2.deleted=0
+			INNER JOIN sys_specific_definitions sd12 ON sd12.main_group = 16 AND sd12.first_group = a2.active AND 
+				sd12.language_id = a2.language_id AND sd12.deleted = 0 AND sd12.active = 0
+			INNER JOIN sys_language l2 ON l2.id = a2.language_id AND l2.deleted = 0 AND l2.active = 0 
+			INNER JOIN info_users u2 ON u2.id = a2.user_id               
+			WHERE a2.language_id = :language_id AND a2.deleted =1) AS deleted_count  		
+                FROM sys_language a
+                INNER JOIN sys_specific_definitions sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND 
+			sd.language_id = a.language_id AND sd.active =0 AND sd.deleted=0
+		INNER JOIN sys_specific_definitions sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND 
+			sd1.language_id = a.language_id AND sd1.deleted = 0 AND sd1.active = 0
+                INNER JOIN sys_language l ON l.id = a.language_id AND l.deleted =0 AND l.active = 0 
 		INNER JOIN info_users u ON u.id = a.user_id  
-                WHERE a.language_code = :language_code
+	    where a.language_id = :language_id
                     ";
             $statement = $pdo->prepare($sql);
-            $statement->bindValue(':language_code', $params['language_code'], \PDO::PARAM_STR);  
+            $statement->bindValue(':language_id', $args['language_id'], \PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -479,8 +543,16 @@ class SysSectors extends \DAL\DalSlim {
             return array("found" => false, "errorInfo" => $e->getMessage()/* , 'debug' => $debugSQLParams */);
         }
     }
-    
-      public function fillComboBox() {
+      /**
+     * user interface datagrid fill operation get row count for widget
+     * @author Okan CIRAN
+     * @ combobox ı doldurmak için sys_language tablosundan çekilen kayıtları döndürür   !!
+     * @version v 1.0  17.12.2015
+     * @param array | null $args
+     * @return array
+     * @throws \PDOException
+     */
+     public function fillComboBox() {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
             /**
@@ -489,13 +561,15 @@ class SysSectors extends \DAL\DalSlim {
             $statement = $pdo->prepare("
                 SELECT                    
                     a.id, 	
-                    COALESCE(NULLIF(a.name, ''), a.name_eng) AS name                                 
-                FROM sys_sectors a       
-                WHERE a.active =0 AND a.deleted = 0 AND a.language_code = :language_code    
-                ORDER BY name
+                    a.language, 
+                    a.language_eng,		
+                    a.language_main_code                                 
+                FROM sys_language  a       
+                WHERE  
+                    a.deleted = 0 and a.active =0    
+                ORDER BY a.priority
                 
                                  ");
-              $statement->bindValue(':language_code', $params['language_code'], \PDO::PARAM_STR);  
               $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             
@@ -511,86 +585,7 @@ class SysSectors extends \DAL\DalSlim {
             return array("found" => false, "errorInfo" => $e->getMessage());
         }
     }
-       /**
-     * basic insert database example for PDO prepared
-     * statements, table names are irrevelant and should be changed on specific 
-     * * returned result set example;
-     * for success result
-     * Array
-      (
-      [found] => 1
-      [errorInfo] => Array
-      (
-      [0] => 00000
-      [1] =>
-      [2] =>
-      )
-
-      [lastInsertId] => 5
-      )
-     * for error result
-     * Array
-      (
-      [found] => 0
-      [errorInfo] => 42P01
-      )
-     * usage     
-     * @author Okan CIRAN
-     * @ sys_sectors tablosuna yeni bir kayıt oluşturur.  !!
-     * @version v 1.0  29.12.2015
-     * @return array
-     * @throws \PDOException
-     */
-    public function insertLanguageTemplate($params = array()) {
-        try {
-            $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory');
-            $pdo->beginTransaction();
-            /**
-             * table names and column names will be changed for specific use
-             */
-            $statement = $pdo->prepare(" 
-                INSERT INTO sys_sectors(
-                    name, name_eng, language_id, ordr, language_parent_id, 
-                    description, description_eng, user_id, language_code )
-               SELECT    
-                    name, name_eng, language_id, ordr, language_parent_id, 
-                    description, description_eng, user_id, language_main_code
-               FROM ( 
-                       SELECT 
-                            '' AS name,                             
-                            COALESCE(NULLIF(c.name_eng, ''), c.name) as name_eng, 
-                            l.id as language_id, c.ordr,
-                            (SELECT x.id FROM sys_sectors x WHERE x.id =:id AND x.deleted =0 AND x.active =0 AND x.language_parent_id =0) AS language_parent_id,    
-                            '' AS description,
-                            description_eng,
-                            c.user_id, 		 
-                            l.language_main_code
-                 FROM sys_sectors c
-                 LEFT JOIN sys_language l ON l.deleted =0 AND l.active =0 
-                 WHERE c.id = :id
-               ) AS xy   
-                WHERE xy.language_main_code NOT IN 
-                    (SELECT distinct language_code 
-                    FROM sys_sectors cx 
-                    WHERE (cx.language_parent_id =:id OR cx.id =:id ) AND cx.deleted =0 AND cx.active =0)
-                ");
- 
-            $statement->bindValue(':id', $params['id'], \PDO::PARAM_INT);   
-            $result = $statement->execute();
-            $insertID = $pdo->lastInsertId('sys_sectors_id_seq');
-            $errorInfo = $statement->errorInfo();
-            if ($errorInfo[0] != "00000" && $errorInfo[1] != NULL && $errorInfo[2] != NULL)
-                throw new \PDOException($errorInfo[0]);
-            $pdo->commit();
-
-            return array("found" => true, "errorInfo" => $errorInfo, "lastInsertId" => $insertID);
-        } catch (\PDOException $e /* Exception $e */) {
-            $pdo->rollback();
-            return array("found" => false, "errorInfo" => $e->getMessage());
-        }
-    }
-
+    
+    
 
 }
-
- 

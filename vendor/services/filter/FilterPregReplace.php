@@ -11,10 +11,11 @@ namespace Services\Filter;
 
 
 /**
- * service manager layer for database connection
- * @author Mustafa Zeynel Dağlı
+ * service manager layer for filter functions
+ * @author Okan CIRAN
+ * @version 29.12.2015
  */
-class TextBaseFilterWithSQLReservedWords implements \Zend\ServiceManager\FactoryInterface {
+class FilterPregReplace implements \Zend\ServiceManager\FactoryInterface {
     
     /**
      * service ceration via factory on zend service manager
@@ -24,13 +25,9 @@ class TextBaseFilterWithSQLReservedWords implements \Zend\ServiceManager\Factory
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
         // Create a filter chain and filter for usage
         $filterChain = new \Zend\Filter\FilterChain();
-        $filterChain->attach(new \Zend\Filter\StripTags())
-                    ->attach(new \Zend\Filter\StringTrim())
-                    ->attach(new \Zend\Filter\HtmlEntities())
-                    ->attach(new \Zend\Filter\StripNewlines())
-                    ->attach(new \Zend\Filter\StringToLower(array('encoding' => 'UTF-8')))
-                    ->attach(new \Zend\Filter\PregReplace(array(
-                        'pattern'     => array("/javascript/i",
+        $filterChain ->attach(new \Zend\Filter\PregReplace(array(
+                        'pattern'     => array('/<!\[cdata\[(.*?)\]\]>/is',// cdata[ filter
+                                               "/javascript/i",
                                                "/([^A-Za-z0-9])*(document)([^A-Za-z0-9])+/i",
                                                "/([^A-Za-z0-9])*(onload)([^A-Za-z0-9])+/i",
                                                "/([^A-Za-z0-9])*(iframe)([^A-Za-z0-9])+/i",
@@ -61,7 +58,7 @@ class TextBaseFilterWithSQLReservedWords implements \Zend\ServiceManager\Factory
                                                "/http/i",
                                                "/(<a)|(<\/a>)/i",*/
                                                ),
-                        'replacement' => 'john',
+                        'replacement' => '',
                     ), 200));
         return $filterChain;
 

@@ -15,17 +15,17 @@ namespace DAL\Factory\PDO;
  * @author Okan CIRAN
  * created date : 08.12.2015
  */
-class SysSectorsFactory  implements \Zend\ServiceManager\FactoryInterface{
+class BlLoginLogoutFactory  implements \Zend\ServiceManager\FactoryInterface{
     
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
-        $sysSectors  = new \DAL\PDO\SysSectors()   ;   
+        $blLoginLogout  = new \DAL\PDO\BlLoginLogout()   ;   
        // print_r('servis  yaratılıyor...  ') ; 
         $slimapp = $serviceLocator->get('slimapp') ;            
-        $sysSectors -> setSlimApp($slimapp);
+        $blLoginLogout -> setSlimApp($slimapp);
         
  
         
-        return $sysSectors;
+        return $blLoginLogout;
       
     }
     

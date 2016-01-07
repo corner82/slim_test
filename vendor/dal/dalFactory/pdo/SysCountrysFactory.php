@@ -15,17 +15,17 @@ namespace DAL\Factory\PDO;
  * @author Okan CIRAN
  * created date : 08.12.2015
  */
-class SysSectorsFactory  implements \Zend\ServiceManager\FactoryInterface{
+class SysCountrysFactory  implements \Zend\ServiceManager\FactoryInterface{
     
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
-        $sysSectors  = new \DAL\PDO\SysSectors()   ;   
+        $sysCountrys  = new \DAL\PDO\SysCountrys()   ;   
        // print_r('servis  yaratılıyor...  ') ; 
         $slimapp = $serviceLocator->get('slimapp') ;            
-        $sysSectors -> setSlimApp($slimapp);
+        $sysCountrys -> setSlimApp($slimapp);
         
  
         
-        return $sysSectors;
+        return $sysCountrys;
       
     }
     

@@ -31,11 +31,12 @@ $res->header('Access-Control-Allow-Origin', '*');
 $res->header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS");
 
 //$app->add(new \Slim\Middleware\MiddlewareTest());
+$app->add(new \Slim\Middleware\MiddlewareHMAC());
+$app->add(new \Slim\Middleware\MiddlewareSecurity());
 $app->add(new \Slim\Middleware\MiddlewareBLLManager());
 $app->add(new \Slim\Middleware\MiddlewareDalManager());
 $app->add(new \Slim\Middleware\MiddlewareServiceManager());
 $app->add(new \Slim\Middleware\MiddlewareMQManager());
-$app->add(new \Slim\Middleware\MiddlewareHMAC());
 
 
 $pdo = new PDO('pgsql:dbname=ecoman_01_10;host=88.249.18.205;user=postgres;password=1q2w3e4r');
@@ -85,7 +86,7 @@ $app->get("/getDynamicForm_test/", function () use ($app) {
 
 
 /**
- * zeynel dağlı
+ *  * zeynel daÄŸlÄ±
  * @since 11-09-2014
  */
 $app->get("/getReports_test/", function () use ($app, $pdo) {
@@ -105,7 +106,7 @@ $app->get("/getReports_test/", function () use ($app, $pdo) {
     //$filterHexadecimalBase = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_HEXADECIMAL_BASE);
     //$filterHexadecimalAdvanced = $app->getServiceManager()->get(\Services\Filter\FilterServiceNames::FILTER_HEXADECIMAL_ADVANCED);
     
-    
+    echo ("deneme   ");
     
     $BLL = $app->getBLLManager()->get('reportConfigurationBLL'); 
 

@@ -7,14 +7,15 @@
  * @license   
  */
 
-namespace Services\Database\Postgresql;
+namespace Services\Filter;
 
 
 /**
- * service manager layer for database connection
+ * service manager layer for filter functions
  * @author Mustafa Zeynel Dağlı
  */
-class PostgreSQLConnectPDO implements \Zend\ServiceManager\FactoryInterface {
+class FilterRemoveNumber implements \Zend\ServiceManager\FactoryInterface {
+    
     
     /**
      * service ceration via factory on zend service manager
@@ -22,17 +23,17 @@ class PostgreSQLConnectPDO implements \Zend\ServiceManager\FactoryInterface {
      * @return boolean|\PDO
      */
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
-        try {
-            $pdo = new \PDO('pgsql:dbname=ostim_development;host=10.18.2.179;',
-                            'postgres',
-                            '1Qaaal123',
-                            PostgreSQLConnectPDOConfig::getConfig());
-            return $pdo;
-        } catch (PDOException $e) {
-            return false;
-        } 
+        // Create a filter chain and filter for usage
+        $filterChain = new \Zend\Filter\FilterChain();
+        $filterChain ->attach(new \Zend\Filter\PregReplace(array(
+                        'pattern'     => array('/[0-9]/',
 
+                                               ),
+                        'replacement' => '',
+                    ), 200));
+        return $filterChain;
 
+        
     }
 
 }

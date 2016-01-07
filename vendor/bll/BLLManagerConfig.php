@@ -1,7 +1,7 @@
 <?php
 /**
  * OSTİM TEKNOLOJİ Framework 
- *
+ * Ğİ
  * @link      https://github.com/corner82/slim_test for the canonical source repository
  * @copyright Copyright (c) 2015 OSTİM TEKNOLOJİ (http://www.ostim.com.tr)
  * @license   
@@ -33,7 +33,20 @@ class BLLManagerConfig{
              'invokables' => array(
                  //'test' => 'Utill\BLL\Test\Test'
                  'reportConfigurationBLL' => 'BLL\BLL\ReportConfiguration',
-                 'cmpnyEqpmntBLL' => 'BLL\BLL\CmpnyEqpmnt'
+                 'cmpnyEqpmntBLL' => 'BLL\BLL\CmpnyEqpmnt',
+                 'sysNavigationLeftBLL' => 'BLL\BLL\SysNavigationLeft',
+                 'sysSectorsBLL' => 'BLL\BLL\SysSectors',
+                 'infoUsersBLL' => 'BLL\BLL\InfoUsers',
+                 'sysCountrysBLL' => 'BLL\BLL\SysCountrys',
+                 'sysCityBLL' => 'BLL\BLL\SysCity',
+                 'sysLanguageBLL' => 'BLL\BLL\SysLanguage',
+                 'sysBoroughBLL' => 'BLL\BLL\SysBorough',
+                 'sysVillageBLL' => 'BLL\BLL\SysVillage',
+                 'blLoginLogoutBLL' => 'BLL\BLL\BlLoginLogout',
+            
+                   
+                 
+                 
              ),
              'factories' => [
                  //'reportConfigurationPDO' => 'BLL\BLL\ReportConfiguration',

@@ -2,7 +2,8 @@
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
-and open the template in the editor.
+and open the template in the editor. Ğİ
+
 -->
 <html>
     <head>
@@ -27,7 +28,7 @@ and open the template in the editor.
     jQuery(document).ready(function() {
         
         $.ajax({
-            url : '../slim_proxy_V0.2/SlimProxyBoot.php',   
+            url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
             data : {
 
                     url : 'getDynamicForm_test',
@@ -53,7 +54,7 @@ and open the template in the editor.
              onSelect : function () {
  
              },
-             url :'../slim_proxy_V0.2/SlimProxyBoot.php',
+             url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',
             //url :'index.php/getReports_rpt',
             queryParams : { 
                             url : 'getReports_test',
@@ -79,6 +80,220 @@ and open the template in the editor.
                 {field:'surname',title:'Surname',width:100},
             ]],
     });
+    
+    
+     $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+     url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',
+            data : {                              
+                    pk : 'VjLzfZK*B99MP7E',
+                    url : 'pkSessionControl_blLoginLogout',
+                    
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+                
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+
+    
+    
+    
+    
+    $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+         
+              url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',
+            data : {  
+                   country_id :91 ,
+                   city_id : 66 ,
+                   boroughs_id : 738 ,
+                   language_code : 'tr',
+                   url : 'fillComboBox_sysvillage',
+                   pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+                
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+    
+    
+    
+    
+    $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+         
+              url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',
+            data : {                
+                   url : 'fillComboBox_syslanguage',
+                   pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+                
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+    
+    
+    $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+     url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',
+            data : {
+                    parent : 0 ,
+                    language_code : 'tr',
+                    pk : 'Cl68lRxFidrIT4o',
+                    url : 'getLeftMenu_leftnavigation',
+                    
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+                
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+
+    $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+    url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php', 
+            data : {                
+                   url : 'getLeftMenuFull_leftnavigation',
+                   pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+                
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+        
+        
+    $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+         url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',
+            data : {
+                    parent : 0 ,
+                    url : 'fillComboBox_syscountryssilinecek',
+                   pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+             
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+        
+    $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+       url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php', 
+            data : {
+                   country_id : 91,  
+                   language_code : 'tr',
+                   url : 'fillComboBox_syscity',
+                   pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+                                  
+            },
+            method : 'GET',
+            
+        
+            success: function(data, textStatus, jqXHR) {
+
+             
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+   
+    $.ajax({
+    //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+     url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',
+      data : {            
+             language_code : 'tr',
+             url : 'fillComboBox_sysborough',
+             pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348',
+             country_id : 91 ,    
+             city_id : 35   
+      },
+      method : 'GET',
+
+
+      success: function(data, textStatus, jqXHR) {
+
+
+      },
+      error: function(jqXHR , textStatus, errorThrown) {
+        console.warn('error text status-->'+textStatus);
+      }
+  });  
+
+      $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+      url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php', 
+            data : {                   
+                language_code : 'tr',
+                url : 'fillComboBox_syscountrys',
+                pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+             
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+
+      $.ajax({
+          //  url : '../Slim_Proxy_SanalFabrika/SlimProxyBoot.php',   
+           url :'../Slim_Proxy_SanalFabrika/SlimProxyBoot.php', 
+            data : {
+                   
+                    language_code : 'tr',
+                    url : 'fillGrid_infoUsers',
+                    pk  : '3441df0babc2a2dda551d7cd39fb235bc4e09cd1e4556bf261bb49188f548348'
+            },
+            method : 'GET',
+        
+            success: function(data, textStatus, jqXHR) {
+
+                
+            },
+            error: function(jqXHR , textStatus, errorThrown) {
+              console.warn('error text status-->'+textStatus);
+            }
+        });  
+    
+    
 
 });
     
